@@ -8,7 +8,7 @@ class PlayScene extends Phaser.Scene {
 
     create() {
         const { height, width } = this.game.config;
-        this.gameSpeed = 10; // control 
+        this.gameSpeed = 20; // control 
         this.isGameRunning = false;
         this.respawnTime = 0;
         this.score = 0;
@@ -19,7 +19,7 @@ class PlayScene extends Phaser.Scene {
 
         this.startTrigger = this.physics.add.sprite(0, height - 200).setOrigin(0, 1).setImmovable();
         // ^^ this is to start sprite to move. y position, 0 starts from top not bottom!
-        this.ground = this.add.tileSprite(0, height, width, 26, 'ground').setOrigin(0, 1)
+        this.ground = this.add.tileSprite(0, height, width, 40, 'ground').setOrigin(0, 1)
         //                       ^^( xpos, ypos, width, height, texture(image) )
         this.bunny = this.physics.add.sprite(0, height, 'bunny-idle')
             //                          ^^ ( xpos, y pos, key, frame(optional) )
