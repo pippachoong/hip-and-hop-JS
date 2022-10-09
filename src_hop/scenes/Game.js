@@ -43,7 +43,7 @@ export default class Game extends Phaser.Scene {
     this.load.image('platform', 'assets/ground_grass.png')
 
     // load the player / bunny
-    this.load.image('bunny', 'assets/sprite.png')
+    this.load.spritesheet('bunny', 'assets/sprite.png', { frameWidth: 150, frameHeight: 207 })
 
     // load the carrot
     this.load.image('carrot', 'assets/carrot.png')
@@ -65,12 +65,14 @@ export default class Game extends Phaser.Scene {
     // create a group of static platforms
     this.platforms = this.physics.add.staticGroup()
 
+    // create base platform
+    this.basePlatform = this.physics.add.staticGroup()
+    this.basePlatform.create(240, 600, 'platform').setScale(2).refreshBody()
+
+    // set collider for base platform
     // debugging text
     this.debugText = this.add.text(10, 10, 'debugging text', {font: '12px Courier', fill: '#000000'})
     this.debugText.setScrollFactor(0)
-
-    // create a base platform
-    const basePlatform = this.physics.add.static
 
     // then create 5 platforms from the group
     for (let i = 0; i < 5; i++) {
@@ -90,8 +92,12 @@ export default class Game extends Phaser.Scene {
 
     this.player = this.physics.add.sprite(240, 320, 'bunny').setScale(0.5)
 
+    // add weight (gravity) to player
+    this.player.body.setGravityY(200)
+
     // tell the game what things should collide
     this.physics.add.collider(this.platforms, this.player)
+    this.physics.add.collider(this.basePlatform, this.player)
 
     // follow the player as it jumps
     this.cameras.main.startFollow(this.player)   
@@ -103,8 +109,6 @@ export default class Game extends Phaser.Scene {
     this.carrots = this.physics.add.group({
       classType: Carrot
     })
-
-    // this.carrots.get(240, 430, 'carrot')
 
     // create collidor for platform and carrot
     this.physics.add.collider(this.platforms, this.carrots)
@@ -126,6 +130,36 @@ export default class Game extends Phaser.Scene {
     this.carrotsCollectedText = this.add.text( 240, 10, 'Carrots: 0', style)
       .setScrollFactor(0) // to scroll along with camera
       .setOrigin(0.5, 0) // keep the text centered
+
+
+    // Create anims for sprite ----------------------------------------
+    this.anims.create({
+      key: 'left',
+      frames: this.anims.generateFrameNumbers('bunny', { start: 0, end: 3}),
+      frameRate: 10,
+      repeat: -1
+    })
+
+    this.anims.create({
+      key: 'turn',
+      frames: [ { key: 'bunny', frame: 4 } ],
+      frameRate: 20
+    })
+
+    this.anims.create({
+      key: 'right',
+      frames: this.anims.generateFrameNumbers('bunny', { start: 5, end: 8}),
+      frameRate: 10,
+      repeat: -1
+    })
+
+    this.anims.create({
+      key: 'jump',
+      frames: [ { key: 'bunny', frame: 9 } ],
+      frameRate: 20
+    })
+
+    console.log(this.anims)
     
   } // create()
 
@@ -134,17 +168,32 @@ export default class Game extends Phaser.Scene {
 
     const touchingDown = this.player.body.touching.down
 
-    if (touchingDown){
-      this.player.setVelocityY(-300)
-    }
+    // if (touchingDown){
+    //   this.player.setVelocityY(-300)
+    // }
 
     // left and right input logic
-    if (this.cursors.left.isDown && !touchingDown){
+    if (this.cursors.left.isDown){
+
       this.player.setVelocityX(-200)
-    } else if (this.cursors.right.isDown && !touchingDown){
+      this.player.anims.play('left', true)
+
+    } else if (this.cursors.right.isDown){
+
       this.player.setVelocityX(200)
+      this.player.anims.play('right', true)
+
     } else {
       this.player.setVelocityX(0)
+      this.player.anims.play('turn')
+    }
+
+    // jump logic
+    if (this.cursors.up.isDown && touchingDown){
+      this.player.setVelocityY(-450)
+
+    } else if (!touchingDown){
+      this.player.anims.play('jump')
     }
 
     // checkCollision is a property where we can set which directions we want collision for
@@ -181,35 +230,7 @@ export default class Game extends Phaser.Scene {
       this.scene.start('game-over')
     }
 
-   
 
-    //find out from Arcade Physics
-
-    // const cursors = this.input.keyboard.createCursorKeys()
-  
-    // if (cursors.left.isDown){
-  
-    //     this.player.setVelocityX(-160);
-    //     player.anims.play('left', true)
-  
-    // } else if (cursors.right.isDown){
-  
-    //     player.setVelocityX(160);
-    //     player.anims.play('right', true)
-  
-    // } else {
-  
-    //     player.setVelocityX(0)
-    //     player.anims.play('turn')
-  
-    // }
-  
-    // if (cursors.up.isDown && player.body.touching.down){
-  
-    //     player.setVelocityY(-500)
-    // }
-
-    // for debugging
     this.debugText.setText([
       `object: ${this.player}`,
       `x: ${this.player.x}`,
@@ -224,11 +245,6 @@ export default class Game extends Phaser.Scene {
 
     const halfWidth = sprite.displayWidth * 0.5
     const gameWidth = this.scale.width
-
-    // console.log(`sprite.x:`, sprite.x)
-    // console.log(`sprite.y:`, sprite.y)
-    // console.log(`halfWidth:`, halfWidth)
-    // console.log(`gameWidth:`, gameWidth)
 
     // if the sprite goes past the left side more than half its width
     // then teleport to the rightside plus half its width
