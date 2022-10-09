@@ -43,7 +43,7 @@ class PlayScene extends Phaser.Scene {
         this.environment = this.add.group();
         this.environment.addMultiple([
             this.add.image(width / 2, 170, 'cloud'),
-            this.add.image(width - 80, 80, 'cloud'),
+            this.add.image(width - 80, 80, 'cloud2'),
             this.add.image((width / 1.3), 100, 'cloud')
         ]);
         this.environment.setAlpha(0);// display them only when the game starts
