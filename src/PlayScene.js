@@ -147,7 +147,7 @@ class PlayScene extends Phaser.Scene {
         this.anims.create({
             key: 'enemy-bunny-fly',
             frames: this.anims.generateFrameNumbers('enemy-bird', { start: 0, end: 1 }),
-            frameRate: 6,
+            frameRate: 3,
             repeat: -1
         })
 
@@ -236,7 +236,7 @@ class PlayScene extends Phaser.Scene {
 
         let obstacle;
         if (obstacleNum > 6) {
-            const enemyHeight = [20, 50]; // 20,50 pixels from the ground 
+            const enemyHeight = [30, 60]; // 20,50 pixels from the ground 
             obstacle = this.obstacles
                 .create(this.game.config.width + distance, this.game.config.height - enemyHeight[Math.floor(Math.random() * 2)], `enemy-bird`)
                 .setOrigin(0, 1)
