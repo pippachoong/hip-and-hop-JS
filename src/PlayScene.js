@@ -18,7 +18,7 @@ class PlayScene extends Phaser.Scene {
         this.reachSound = this.sound.add('reach', { volume: 0.2 });
 
         this.startTrigger = this.physics.add.sprite(0, height - 200).setOrigin(0, 1).setImmovable();
-        // ^^ this is to start sprite to move
+        // ^^ this is to start sprite to move. y position, 0 starts from top not bottom!
         this.ground = this.add.tileSprite(0, height, width, 26, 'ground').setOrigin(0, 1)
         //                       ^^( xpos, ypos, width, height, texture(image) )
         this.bunny = this.physics.add.sprite(0, height, 'bunny-idle')
