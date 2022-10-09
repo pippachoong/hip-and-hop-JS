@@ -19,15 +19,17 @@ class PlayScene extends Phaser.Scene {
 
         this.startTrigger = this.physics.add.sprite(0, 10).setOrigin(0, 1).setImmovable();
         // ^^ this is to start sprite to move
-        this.ground = this.add.tileSprite(0, height, width, 26, 'ground').setOrigin(0, 1)
+
+        // tileSprite - continuous 
+        this.ground = this.add.tileSprite(0, height, width, 50, 'ground').setOrigin(0, 1)
         //                       ^^( xpos, ypos, width, height, texture(image) )
         this.bunny = this.physics.add.sprite(0, height, 'bunny-idle')
             //                          ^^ ( xpos, y pos, key, frame(optional) )
             .setCollideWorldBounds(true)
             .setGravityY(5000) // 5000 pixels per second
-            .setBodySize(44, 92)
+            .setBodySize(60, 152) // position of bunny in canvas in start mode
             .setDepth(1)
-            .setOrigin(0, 1);
+            .setOrigin(0, 1); // the location of bunny in canvas
 
         // display of score 
         this.scoreText = this.add.text(width, 0, "00000", { fill: "#535353", font: '900 35px Courier', resolution: 5 })

@@ -5,18 +5,16 @@ class PreloadScene extends Phaser.Scene {
 
     constructor() {
         super('PreloadScene');
-        console.log('preload constructor done');
     }
 
     preload() {
-        console.log('preload begin');
         this.load.audio('jump', 'assets/jump.m4a');
         this.load.audio('hit', 'assets/hit.m4a');
         this.load.audio('reach', 'assets/reach.m4a');
 
-        this.load.image('ground', 'assets/ground.png');
-        this.load.image('bunny-idle', 'assets/dino-idle.png');
-        this.load.image('bunny-hurt', 'assets/dino-hurt.png');
+        this.load.image('ground', 'assets/groundLayer2.png');
+        this.load.image('bunny-idle', 'assets/bunny2_ready.png');
+        this.load.image('bunny-hurt', 'assets/bunny2_hurt.png');
         this.load.image('restart', 'assets/restart.png');
         this.load.image('game-over', 'assets/game-over.png');
         this.load.image('cloud', 'assets/cloud.png');
@@ -51,12 +49,10 @@ class PreloadScene extends Phaser.Scene {
         this.load.image('obsticle-4', 'assets/cactuses_big_1.png')
         this.load.image('obsticle-5', 'assets/cactuses_big_2.png')
         this.load.image('obsticle-6', 'assets/cactuses_big_3.png')
-        console.log('preload end');
     }
 
     create() {
         this.scene.start('PlayScene');
-        console.log('preload create?');
     }
 }
 
