@@ -17,11 +17,11 @@ class PlayScene extends Phaser.Scene {
         this.hitSound = this.sound.add('hit', { volume: 0.2 });
         this.reachSound = this.sound.add('reach', { volume: 0.2 });
 
-        this.startTrigger = this.physics.add.sprite(0, 70).setOrigin(0, 1).setImmovable();
+        this.startTrigger = this.physics.add.sprite(0, height - 200).setOrigin(0, 1).setImmovable();
         // ^^ this is to start sprite to move
         this.ground = this.add.tileSprite(0, height, width, 26, 'ground').setOrigin(0, 1)
         //                       ^^( xpos, ypos, width, height, texture(image) )
-        this.bunny = this.physics.add.sprite(0, 70, 'bunny-idle')
+        this.bunny = this.physics.add.sprite(0, height, 'bunny-idle')
             //                          ^^ ( xpos, y pos, key, frame(optional) )
             .setCollideWorldBounds(true)
             .setGravityY(5000) // 5000 pixels per second
@@ -90,11 +90,14 @@ class PlayScene extends Phaser.Scene {
     initStartTrigger() {
         const { width, height } = this.game.config;
         this.physics.add.overlap(this.startTrigger, this.bunny, () => {
-            if (this.startTrigger.y === 60) {
+            console.log('trigger & bunny collided!');
+            if (this.startTrigger.y === 10) {
                 //                      ^^ as per line 22
-                this.startTrigger.body.reset(0, 60);
+                this.startTrigger.body.reset(0, 0);
+                console.log('returned');
                 return;
             }
+            console.log('skipped trigger check');
             // as soon as it jumps and hits
             this.startTrigger.disableBody(true, true);
             // console.log('ceiling's hit')
