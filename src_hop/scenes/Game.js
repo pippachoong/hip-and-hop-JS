@@ -17,6 +17,21 @@ export default class Game extends Phaser.Scene {
 
   cursors
 
+  carrotsCollected = 0
+
+  carrotsCollectedText
+
+  // debugging text to display
+  debugText
+
+  // debugging object
+  debugObject
+
+  // init() method is called by Phaser before preload().
+  init(){
+    this.carrotsCollected = 0
+  }
+
   // specify images, audio, or other assets to load before starting the scene
   preload(){
     
@@ -50,6 +65,13 @@ export default class Game extends Phaser.Scene {
     // create a group of static platforms
     this.platforms = this.physics.add.staticGroup()
 
+    // debugging text
+    this.debugText = this.add.text(10, 10, 'debugging text', {font: '12px Courier', fill: '#000000'})
+    this.debugText.setScrollFactor(0)
+
+    // create a base platform
+    const basePlatform = this.physics.add.static
+
     // then create 5 platforms from the group
     for (let i = 0; i < 5; i++) {
       
@@ -82,10 +104,28 @@ export default class Game extends Phaser.Scene {
       classType: Carrot
     })
 
-    this.carrots.get(240, 430, 'carrot')
+    // this.carrots.get(240, 430, 'carrot')
 
     // create collidor for platform and carrot
     this.physics.add.collider(this.platforms, this.carrots)
+
+    // overlap is used to check to see if the target body, or an array of target bodies,
+    // intersects with any of the given bodies.
+    // if intersection occurs in this method will return `true`, and if provided, invoke the callbacks.
+    // overlap(target, [bodies], [overlapCallBack], [processCallback], [callbackContext])
+    this.physics.add.overlap(
+      this.player, // target
+      this.carrots, // [bodies]
+      this.handleCollectCarrot, // called on overlap
+      undefined, // don't need process callback
+      this // `this` is the Game Scene instance when handleCollectCarrot() method is called
+    )
+
+    // Add carrot score to scene
+    const style = { color: '#000', fontSize: 24}
+    this.carrotsCollectedText = this.add.text( 240, 10, 'Carrots: 0', style)
+      .setScrollFactor(0) // to scroll along with camera
+      .setOrigin(0.5, 0) // keep the text centered
     
   } // create()
 
@@ -130,9 +170,18 @@ export default class Game extends Phaser.Scene {
       }
     })
 
+    // calling horizontalWrap method
     this.horizontalWrap(this.player)
 
+    // for game over
+    const bottomPlatform = this.findBottomMostPlatform()
+    
+    // if player is past 200 pixels than the bottom most platform, it will be game over
+    if (this.player.y > bottomPlatform.y + 200){
+      this.scene.start('game-over')
+    }
 
+   
 
     //find out from Arcade Physics
 
@@ -160,6 +209,12 @@ export default class Game extends Phaser.Scene {
     //     player.setVelocityY(-500)
     // }
 
+    // for debugging
+    this.debugText.setText([
+      `object: ${this.player}`,
+      `x: ${this.player.x}`,
+      `y: ${this.player.y}`,
+    ])
 
 
   } // update()
@@ -193,14 +248,66 @@ export default class Game extends Phaser.Scene {
     // the carrot instance is positioned above the given sprite using its display height as guide
     const carrot = this.carrots.get(sprite.x, y, 'carrot')
 
+    // set active and visible
+    carrot.setActive(true)
+    carrot.setVisible(true)
+
     this.add.existing(carrot)
 
     // update the physics body size
     carrot.body.setSize(carrot.width, carrot.height)
 
+    // make sure body is enabled in the physics world
+    this.physics.world.enable(carrot)
+
     return carrot
 
-  }
+  } // addCarrotAbove()
+
+  handleCollectCarrot(player, carrot){
+
+    // the carrot will disappear once the player touches the carrot
+    this.carrots.killAndHide(carrot)
+
+    // disable from physics world
+    this.physics.world.disableBody(carrot.body)
+
+    // increment by 1 when carrot is picked up
+    this.carrotsCollected++
+
+    // create new text value and set it
+    const value = `Carrots: ${this.carrotsCollected}`
+    this.carrotsCollectedText.text = value
+
+  } // handleCollectCarrot()
+
+  // method for identifying which playform in the platforms group is the last one visually
+  findBottomMostPlatform(){
+
+    // start by getting all the platforms as an Array with this.platforms.getChildren()
+    const platforms = this.platforms.getChildren()
+
+    // pick first one in the Array as the current bottom most platform
+    let bottomPlatform = platforms[0]
+
+    for (let i = 0; i < platforms.length; i++) {
+      
+      // iterate over the Array and compare each platform against the curent bottomPlatform.
+      // if a platform's y position is greater than the bottomPlatform then we set it as the new bottomPlatform
+      const platform = platforms[i]
+      if (platform.y < bottomPlatform.y){
+        continue
+      }
+
+      // once the entire array was iterated, the last platform is the bottom most platform
+      bottomPlatform = platform
+      
+    }
+    // and it gets returned
+    return bottomPlatform
+  } // findBottomMostPlatform()
+
+  
 
 }
 
