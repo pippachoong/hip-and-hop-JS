@@ -8,7 +8,7 @@ class PlayScene extends Phaser.Scene {
 
     create() {
         const { height, width } = this.game.config;
-        this.gameSpeed = 10; // control 
+        this.gameSpeed = 200; // control speed here!
         this.isGameRunning = false;
         this.respawnTime = 0;
         this.score = 0;
@@ -25,7 +25,7 @@ class PlayScene extends Phaser.Scene {
         //                       ^^( xpos, ypos, width, height, texture(image) )
         this.bunny = this.physics.add.sprite(0, height, 'bunny-idle')
             //                          ^^ ( xpos, y pos, key, frame(optional) )
-            .setCollideWorldBounds(true)
+            .setCollideWorldBounds(true) // to make it collides with objects
             .setGravityY(5000) // 5000 pixels per second
             .setBodySize(60, 152) // position of bunny in canvas in start mode
             .setDepth(1)
@@ -62,7 +62,7 @@ class PlayScene extends Phaser.Scene {
         this.initAnims();
         this.initStartTrigger();
         this.initColliders();
-        this.handleInputs();
+        this.handleInputs(); // event handler function 
         this.handleScore(); // function to handle scores
     }
 
@@ -191,7 +191,7 @@ class PlayScene extends Phaser.Scene {
             // resetting to all initial state
 
             this.bunny.setVelocityY(0);
-            this.bunny.body.height = 92;
+            this.bunny.body.height = 152;
             this.bunny.body.offset.y = 0;
             this.physics.resume();
             this.obsticles.clear(true, true);// removing all obstacles
@@ -201,10 +201,10 @@ class PlayScene extends Phaser.Scene {
         })
         this.input.keyboard.on('keydown_SPACE', () => {
             // if it's not touching the floor 
-            if (!this.bunny.body.onFloor() || this.bunny.body.velocity.x > 0) { return; }
+            if (!this.bunny.body.onFloor() || this.bunny.body.velocity.x > 0) { return }
 
             this.jumpSound.play();
-            this.bunny.body.height = 92;
+            this.bunny.body.height = 152;
             this.bunny.body.offset.y = 0;
             this.bunny.setVelocityY(-1600);
             this.bunny.setTexture('bunny', 0);
@@ -212,7 +212,7 @@ class PlayScene extends Phaser.Scene {
 
         this.input.keyboard.on('keydown_DOWN', () => {
             // if it's not touching the floor dont provide velocity or not running
-            if (!this.bunny.body.onFloor() || !this.isGameRunning) { return; }
+            if (!this.bunny.body.onFloor() || !this.isGameRunning) { return }
             // this is state of docking down
             this.bunny.body.height = 58;
             this.bunny.body.offset.y = 34;
@@ -220,9 +220,9 @@ class PlayScene extends Phaser.Scene {
 
         this.input.keyboard.on('keyup_DOWN', () => {
             // if bunny's not touching the floor dont provide velocity
-            if ((this.score !== 0 && !this.isGameRunning)) { return; }
+            if ((this.score !== 0 && !this.isGameRunning)) { return }
             // this is state of docking down
-            this.bunny.body.height = 92;
+            this.bunny.body.height = 152;
             this.bunny.body.offset.y = 0;
         })
     }
@@ -235,7 +235,7 @@ class PlayScene extends Phaser.Scene {
 
         let obsticle;
         if (obsticleNum > 6) {
-            const enemyHeight = [20, 50]; // 20,50 pixels from the ground 
+            const enemyHeight = [60, 80]; // 20,50 pixels from the ground 
             obsticle = this.obsticles
                 .create(this.game.config.width + distance, this.game.config.height - enemyHeight[Math.floor(Math.random() * 2)], `enemy-bird`)
                 .setOrigin(0, 1)
@@ -252,12 +252,12 @@ class PlayScene extends Phaser.Scene {
 
         obsticle.setImmovable();
     }
-    // 60 fps
+
     update(time, delta) {
         if (!this.isGameRunning) { return }
 
         // create a moving ground
-        this.ground.tilePositionX += this.gameSpeed;// every update(sec) ground will move 5 pixel
+        this.ground.tilePositionX += this.gameSpeed;
         Phaser.Actions.IncX(this.obsticles.getChildren(), -this.gameSpeed);
         Phaser.Actions.IncX(this.environment.getChildren(), - 0.5); // the speed of clouds moving
 
