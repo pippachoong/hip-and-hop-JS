@@ -55,7 +55,7 @@ class PlayScene extends Phaser.Scene {
             this.gameOverText, this.restart
         ])
 
-        this.obsticles = this.physics.add.group();
+        this.obstacles = this.physics.add.group();
 
         this.initAnims();
         this.initStartTrigger();
@@ -64,9 +64,9 @@ class PlayScene extends Phaser.Scene {
         this.handleScore(); // function to handle scores
     }
 
-    // whenever it hits the obsticles
+    // whenever it hits the obstacles
     initColliders() {
-        this.physics.add.collider(this.bunny, this.obsticles, () => {
+        this.physics.add.collider(this.bunny, this.obstacles, () => {
             this.highScoreText.x = this.scoreText.x - this.scoreText.width - 20; // position of score
 
             const highScore = this.highScoreText.text.substr(this.highScoreText.text.length - 5);
@@ -195,7 +195,7 @@ class PlayScene extends Phaser.Scene {
             this.bunny.body.height = 92;
             this.bunny.body.offset.y = 60;
             this.physics.resume();
-            this.obsticles.clear(true, true);// removing all obstacles
+            this.obstacles.clear(true, true);// removing all obstacles
             this.isGameRunning = true;
             this.gameOverScreen.setAlpha(0); //setAlpha(0) to be hidden
             this.anims.resumeAll();
@@ -228,30 +228,30 @@ class PlayScene extends Phaser.Scene {
         })
     }
 
-    placeObsticle() {
-        const obsticleNum = Math.floor(Math.random() * 7) + 1;// (total of 7 obsticles)
-        const distance = Phaser.Math.Between(600, 900);// the distance between obsticles in pixels
-        // console.log('obsticleNum',obsticleNum)
+    placeObstacle() {
+        const obstacleNum = Math.floor(Math.random() * 7) + 1;// (total of 7 obstacles)
+        const distance = Phaser.Math.Between(600, 900);// the distance between obstacles in pixels
+        // console.log('obstacleNum',obstacleNum)
         // console.log('distance',distance)
 
-        let obsticle;
-        if (obsticleNum > 6) {
+        let obstacle;
+        if (obstacleNum > 6) {
             const enemyHeight = [20, 50]; // 20,50 pixels from the ground 
-            obsticle = this.obsticles
+            obstacle = this.obstacles
                 .create(this.game.config.width + distance, this.game.config.height - enemyHeight[Math.floor(Math.random() * 2)], `enemy-bird`)
                 .setOrigin(0, 1)
-            obsticle.play('enemy-bunny-fly', 1);
-            obsticle.body.height = obsticle.body.height / 1.5;
+            obstacle.play('enemy-bunny-fly', 1);
+            obstacle.body.height = obstacle.body.height / 1.5;
         } else {
-            obsticle = this.obsticles
-                .create(this.game.config.width + distance, this.game.config.height, `obsticle-${obsticleNum}`)
+            obstacle = this.obstacles
+                .create(this.game.config.width + distance, this.game.config.height, `obstacle-${obstacleNum}`)
                 //                                                                              ^^ randomly generate obstacles
-                .setOrigin(0, 1); // setting the obsticle position
+                .setOrigin(0, 1); // setting the obstacle position
 
-            obsticle.body.offset.y = +10;
+            obstacle.body.offset.y = +10;
         }
 
-        obsticle.setImmovable();
+        obstacle.setImmovable();
     }
     // 60 fps
     update(time, delta) {
@@ -259,21 +259,21 @@ class PlayScene extends Phaser.Scene {
 
         // create a moving ground
         this.ground.tilePositionX += this.gameSpeed;// every update(sec) ground will move 5 pixel
-        Phaser.Actions.IncX(this.obsticles.getChildren(), -this.gameSpeed);
+        Phaser.Actions.IncX(this.obstacles.getChildren(), -this.gameSpeed);
         Phaser.Actions.IncX(this.environment.getChildren(), - 0.5); // the speed of clouds moving
 
         this.respawnTime += delta * this.gameSpeed * 0.08;
         // if respawnTime is equal or more tahn 1.5secs
         if (this.respawnTime >= 1500) {
-            this.placeObsticle();
+            this.placeObstacle();
             this.respawnTime = 0;
         }
 
-        this.obsticles.getChildren().forEach(obsticle => {
-            // if it's not hitting the obsticles
-            if (obsticle.getBounds().right < 0) {
+        this.obstacles.getChildren().forEach(obstacle => {
+            // if it's not hitting the obstacles
+            if (obstacle.getBounds().right < 0) {
                 // console.log('miss hitting obstacle!');
-                this.obsticles.killAndHide(obsticle);
+                this.obstacles.killAndHide(obstacle);
             }
         })
 

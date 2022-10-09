@@ -45,12 +45,12 @@ class PreloadScene extends Phaser.Scene {
         })
 
         // obstacles
-        this.load.image('obsticle-1', 'assets/cactuses_small_1.png')
-        this.load.image('obsticle-2', 'assets/cactuses_small_2.png')
-        this.load.image('obsticle-3', 'assets/cactuses_small_3.png')
-        this.load.image('obsticle-4', 'assets/cactuses_big_1.png')
-        this.load.image('obsticle-5', 'assets/cactuses_big_2.png')
-        this.load.image('obsticle-6', 'assets/cactuses_big_3.png')
+        this.load.image('obstacle-1', 'assets/cherry.png')
+        this.load.image('obstacle-2', 'assets/tallShroom_tan_red.png')
+        this.load.image('obstacle-3', 'assets/gummyWormRedMid2.png')
+        this.load.image('obstacle-4', 'assets/tallShroom_brown.png')
+        this.load.image('obstacle-5', 'assets/tallShroom_red.png')
+        this.load.image('obstacle-6', 'assets/combined-mushroom.png')
         console.log('preload end');
     }
 
