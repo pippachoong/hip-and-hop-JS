@@ -17,11 +17,11 @@ class PlayScene extends Phaser.Scene {
         this.hitSound = this.sound.add('hit', { volume: 0.2 });
         this.reachSound = this.sound.add('reach', { volume: 0.2 });
 
-        this.startTrigger = this.physics.add.sprite(0, 10).setOrigin(0, 1).setImmovable();
+        this.startTrigger = this.physics.add.sprite(0, 70).setOrigin(0, 1).setImmovable();
         // ^^ this is to start sprite to move
         this.ground = this.add.tileSprite(0, height, width, 26, 'ground').setOrigin(0, 1)
         //                       ^^( xpos, ypos, width, height, texture(image) )
-        this.bunny = this.physics.add.sprite(0, height, 'bunny-idle')
+        this.bunny = this.physics.add.sprite(0, 70, 'bunny-idle')
             //                          ^^ ( xpos, y pos, key, frame(optional) )
             .setCollideWorldBounds(true)
             .setGravityY(5000) // 5000 pixels per second
@@ -90,9 +90,9 @@ class PlayScene extends Phaser.Scene {
     initStartTrigger() {
         const { width, height } = this.game.config;
         this.physics.add.overlap(this.startTrigger, this.bunny, () => {
-            if (this.startTrigger.y === 10) {
+            if (this.startTrigger.y === 60) {
                 //                      ^^ as per line 22
-                this.startTrigger.body.reset(0, height);
+                this.startTrigger.body.reset(0, 60);
                 return;
             }
             // as soon as it jumps and hits
@@ -104,7 +104,7 @@ class PlayScene extends Phaser.Scene {
                 loop: true,
                 callbackScope: this,
                 callback: () => {
-                    this.bunny.setVelocityX(80);// 80 pixels
+                    this.bunny.setVelocityX(80);// 80 pixels     
                     this.bunny.play('bunny-run', 1); // 
 
                     if (this.ground.width < width) {
@@ -128,7 +128,7 @@ class PlayScene extends Phaser.Scene {
 
         this.anims.create({
             key: 'bunny-run',
-            frames: this.anims.generateFrameNumbers('bunny', { start: 2, end: 3 }),
+            frames: this.anims.generateFrameNumbers('bunny', { start: 0, end: 3 }),
             //                                      ^^image, {animation frames start , end }
             frameRate: 10,// 10 times per second
             repeat: -1  // number to repeat
@@ -188,9 +188,9 @@ class PlayScene extends Phaser.Scene {
         this.restart.on('pointerdown', () => {
             // resetting to all initial state
 
-            this.bunny.setVelocityY(0);
+            this.bunny.setVelocityY(60); //previous (0)
             this.bunny.body.height = 92;
-            this.bunny.body.offset.y = 0;
+            this.bunny.body.offset.y = 60;
             this.physics.resume();
             this.obsticles.clear(true, true);// removing all obstacles
             this.isGameRunning = true;
@@ -203,9 +203,9 @@ class PlayScene extends Phaser.Scene {
 
             this.jumpSound.play();
             this.bunny.body.height = 92;
-            this.bunny.body.offset.y = 0;
+            this.bunny.body.offset.y = 60;
             this.bunny.setVelocityY(-1600);
-            this.bunny.setTexture('bunny', 0);
+            this.bunny.setTexture('bunny', 60);
         })
 
         this.input.keyboard.on('keydown_DOWN', () => {
@@ -221,7 +221,7 @@ class PlayScene extends Phaser.Scene {
             if ((this.score !== 0 && !this.isGameRunning)) { return; }
             // this is state of docking down
             this.bunny.body.height = 92;
-            this.bunny.body.offset.y = 0;
+            this.bunny.body.offset.y = 60;
         })
     }
 
@@ -286,7 +286,7 @@ class PlayScene extends Phaser.Scene {
             this.bunny.setTexture('bunny', 0); // set the image that it's no moving
         } else {
             // if bunny's height is less than 58 - insert this image else other image
-            this.bunny.body.height <= 58 ? this.bunny.play('bunny-down-anim', true) : this.bunny.play('bunny-run', true);
+            this.bunny.body.height <= 60 ? this.bunny.play('bunny-down-anim', true) : this.bunny.play('bunny-run', true);
         }
     }
 }

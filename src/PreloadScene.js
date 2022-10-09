@@ -15,7 +15,7 @@ class PreloadScene extends Phaser.Scene {
         this.load.audio('reach', 'assets/reach.m4a');
 
         this.load.image('ground', 'assets/ground.png');
-        this.load.image('bunny-idle', 'assets/dino-idle.png');
+        this.load.image('bunny-idle', 'assets/bunny2_ready.png');
         this.load.image('bunny-hurt', 'assets/dino-hurt.png');
         this.load.image('restart', 'assets/restart.png');
         this.load.image('game-over', 'assets/game-over.png');
