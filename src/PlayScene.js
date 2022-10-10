@@ -218,20 +218,17 @@ class PlayScene extends Phaser.Scene {
 
 
         this.input.keyboard.on('keydown_RIGHT', () => {
-
-            if ((this.score !== 0 && !this.isGameRunning)) { return; }
+            if (!this.isGameRunning) { return; }
 
             this.bunny.body.height = 92;
             this.bunny.body.offset.y = 60;
             this.bunny.setVelocityX(160);
-
         })
 
         // when not pressing right key
         this.input.keyboard.on('keyup_RIGHT', () => {
-
-            if ((this.score !== 0 && !this.isGameRunning)) { return; }
-
+            // wont move until the game is running
+            if (!this.isGameRunning) { return; }
             this.bunny.body.height = 92;
             this.bunny.body.offset.y = 60;
             this.bunny.setVelocityX(0);
@@ -240,8 +237,8 @@ class PlayScene extends Phaser.Scene {
 
         // when not pressing right key
         this.input.keyboard.on('keyup_LEFT', () => {
-
-            if ((this.score !== 0 && !this.isGameRunning)) { return; }
+            // wont move until the game is running
+            if (!this.isGameRunning) { return; }
 
             this.bunny.body.height = 92;
             this.bunny.body.offset.y = 60;
@@ -251,7 +248,7 @@ class PlayScene extends Phaser.Scene {
 
         this.input.keyboard.on('keydown_LEFT', () => {
 
-            if ((this.score !== 0 && !this.isGameRunning)) { return; }
+            if (!this.isGameRunning) { return; }
 
             this.bunny.body.height = 92;
             this.bunny.body.offset.y = 60;
