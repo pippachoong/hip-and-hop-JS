@@ -31,6 +31,8 @@ class PlayScene extends Phaser.Scene {
             .setDepth(1) // main character is always shown front of the canvas
             .setOrigin(-0.5, 1);
 
+        this.bunny.setBounce(0.2) // slight bounce for bunny
+
 
         // display of score 
         this.scoreText = this.add.text(width, 0, "00000", { fill: "#535353", font: '900 35px Courier', resolution: 5 })
