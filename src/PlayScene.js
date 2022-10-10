@@ -17,18 +17,18 @@ class PlayScene extends Phaser.Scene {
         this.hitSound = this.sound.add('hit', { volume: 0.2 });
         this.reachSound = this.sound.add('reach', { volume: 0.2 });
 
-        this.startTrigger = this.physics.add.sprite(0, height - 200).setOrigin(0, 1).setImmovable();
+        this.startTrigger = this.physics.add.sprite(0, height - 200, 'bunny-idle').setOrigin(-0.5, 1).setImmovable();// wont move. also 'bunny-ilde is a plcaeholder for triggering start'
         // ^^ this is to start sprite to move. y position, 0 starts from top not bottom!
         this.background = this.add.tileSprite(0, height, width, 0, 'background').setOrigin(0, 1)
         this.ground = this.add.tileSprite(0, height, width, 40, 'ground').setOrigin(0, 1)
         //                       ^^( xpos, ypos, width, height, texture(image) )
         this.bunny = this.physics.add.sprite(0, height, 'bunny-idle')
             //                          ^^ ( xpos, y pos, key, frame(optional) )
-            .setCollideWorldBounds(true)
+            .setCollideWorldBounds(true)//  stop from being able to run off screen's edges or jump through the top
             .setGravityY(5000) // 5000 pixels per second
             .setBodySize(44, 92)
             .setDepth(1) // main character is always shown front of the canvas
-            .setOrigin(0, 1);
+            .setOrigin(-0.5, 1);
 
         // display of score 
         this.scoreText = this.add.text(width, 0, "00000", { fill: "#535353", font: '900 35px Courier', resolution: 5 })
@@ -244,7 +244,7 @@ class PlayScene extends Phaser.Scene {
             obstacle.body.offset.y = +10;
         }
 
-        obstacle.setImmovable();
+        obstacle.setImmovable(); // wont move
     }
     // 60 fps
     update(time, delta) {
