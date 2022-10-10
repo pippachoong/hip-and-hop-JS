@@ -26,7 +26,6 @@ class PlayScene extends Phaser.Scene {
             //                          ^^ ( xpos, y pos, key, frame(optional) )
             .setCollideWorldBounds(true)//  stop from being able to run off screen's edges or jump through the top
             .setGravityY(5000) // 5000 pixels per second
-            .setBodySize(44, 92)
             .setDepth(1) // main character is always shown front of the canvas
             .setOrigin(-0.5, 1);
 
