@@ -19,6 +19,7 @@ class PlayScene extends Phaser.Scene {
 
         this.startTrigger = this.physics.add.sprite(0, height - 200).setOrigin(0, 1).setImmovable();
         // ^^ this is to start sprite to move. y position, 0 starts from top not bottom!
+        this.background = this.add.tileSprite(0, height, width, 0, 'background').setOrigin(0, 1)
         this.ground = this.add.tileSprite(0, height, width, 40, 'ground').setOrigin(0, 1)
         //                       ^^( xpos, ypos, width, height, texture(image) )
         this.bunny = this.physics.add.sprite(0, height, 'bunny-idle')
@@ -257,10 +258,11 @@ class PlayScene extends Phaser.Scene {
     update(time, delta) {
         if (!this.isGameRunning) { return }
 
+        this.background.tilePositionX += 2// every updateground will move 2 pixel per sec
         // create a moving ground
-        this.ground.tilePositionX += this.gameSpeed;// every update(sec) ground will move 5 pixel
+        this.ground.tilePositionX += this.gameSpeed;// every update(sec) as per gameSpeed
         Phaser.Actions.IncX(this.obstacles.getChildren(), -this.gameSpeed);
-        Phaser.Actions.IncX(this.environment.getChildren(), - 0.5); // the speed of clouds moving
+        Phaser.Actions.IncX(this.environment.getChildren(), - 0.5); // the speed of clouds moving 0.5 pixels per sec
 
         this.respawnTime += delta * this.gameSpeed * 0.08;
         // if respawnTime is equal or more tahn 1.5secs
