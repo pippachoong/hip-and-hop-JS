@@ -30,6 +30,7 @@ class PlayScene extends Phaser.Scene {
             .setDepth(1) // main character is always shown front of the canvas
             .setOrigin(-0.5, 1);
 
+
         // display of score 
         this.scoreText = this.add.text(width, 0, "00000", { fill: "#535353", font: '900 35px Courier', resolution: 5 })
             .setOrigin(1, 0)
@@ -138,6 +139,8 @@ class PlayScene extends Phaser.Scene {
             repeat: -1  // number to repeat
         })
 
+
+
         this.anims.create({
             key: 'bunny-down-anim',
             frames: this.anims.generateFrameNumbers('bunny-down', { start: 0, end: 1 }),
@@ -201,6 +204,7 @@ class PlayScene extends Phaser.Scene {
             this.gameOverScreen.setAlpha(0); //setAlpha(0) to be hidden
             this.anims.resumeAll();
         })
+
         this.input.keyboard.on('keydown_SPACE', () => {
             // if it's not touching the floor 
             if (!this.bunny.body.onFloor() || this.bunny.body.velocity.x > 0) { return; }
@@ -212,13 +216,51 @@ class PlayScene extends Phaser.Scene {
             // this.bunny.setTexture('bunny', 0);
         })
 
-        this.input.keyboard.on('keyup_DOWN', () => {
-            // if bunny's not touching the floor dont provide velocity
+
+        this.input.keyboard.on('keydown_RIGHT', () => {
+
             if ((this.score !== 0 && !this.isGameRunning)) { return; }
-            // this is state of docking down
+
             this.bunny.body.height = 92;
             this.bunny.body.offset.y = 60;
+            this.bunny.setVelocityX(160);
+
         })
+
+        // when not pressing right key
+        this.input.keyboard.on('keyup_RIGHT', () => {
+
+            if ((this.score !== 0 && !this.isGameRunning)) { return; }
+
+            this.bunny.body.height = 92;
+            this.bunny.body.offset.y = 60;
+            this.bunny.setVelocityX(0);
+
+        })
+
+        // when not pressing right key
+        this.input.keyboard.on('keyup_LEFT', () => {
+
+            if ((this.score !== 0 && !this.isGameRunning)) { return; }
+
+            this.bunny.body.height = 92;
+            this.bunny.body.offset.y = 60;
+            this.bunny.setVelocityX(0);
+
+        })
+
+        this.input.keyboard.on('keydown_LEFT', () => {
+
+            if ((this.score !== 0 && !this.isGameRunning)) { return; }
+
+            this.bunny.body.height = 92;
+            this.bunny.body.offset.y = 60;
+            this.bunny.setVelocityX(-160);
+
+        })
+
+
+
     }
 
     placeObstacle() {
