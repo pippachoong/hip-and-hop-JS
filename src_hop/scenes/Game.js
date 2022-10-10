@@ -64,35 +64,8 @@ export default class Game extends Phaser.Scene {
       .setScrollFactor(1, 0) 
       // by setting y scroll factor to 0 we can keep the background from scrolling up and down with the camera
     
-    // create a group of static platforms
+    // create a group of dynamic platforms
     this.platforms = this.physics.add.group()
-    this.movingPlatform = this.physics.add.image(100, 200, 'platform')
-      .setImmovable(true)
-      .setVelocity(0, 0);
-
-    this.movingPlatform.body.setAllowGravity(false);
-
-    this.tweens.timeline({
-      targets: this.movingPlatform.body.velocity,
-      loop: -1,
-      tweens: [
-        { x:    50, y: 0, duration: 2000, ease: 'Stepped' },
-        { x:    -50, y:  0, duration: 2000, ease: 'Stepped' },
-        // { x:  150, y:  100, duration: 4000, ease: 'Stepped' },
-        // { x:    0, y: -200, duration: 2000, ease: 'Stepped' },
-        // { x:    0, y:    0, duration: 1000, ease: 'Stepped' },
-        // { x: -150, y:  100, duration: 4000, ease: 'Stepped' }
-      ]
-    });
-
-    const collisionMovingPlatform = (platform, sprite) => {
-
-      if (platform.body.touching.up && sprite.body.touching.down) {
-        sprite.isOnPlatform = true;
-        sprite.currentPlatform = platform;      
-      }
-    };
- 
     
     // create base platform
     this.basePlatform = this.physics.add.staticGroup()
@@ -109,8 +82,8 @@ export default class Game extends Phaser.Scene {
     // then create 5 platforms from the group
     for (let i = 0; i < 5; i++) {
       
-      const x = Phaser.Math.Between(80, 400) // create a random number between 80 to 400
-      const y =  160 * i // set 150 pixels apart vertically
+      const x = Phaser.Math.Between(20, 460) // create a random number between 80 to 400
+      const y =  200 * i // set 150 pixels apart vertically
 
       const platform = this.platforms.create(x, y, 'platform')
         .setImmovable(true)
@@ -120,10 +93,25 @@ export default class Game extends Phaser.Scene {
     
       platform.scale = 0.5
 
-      const body = platform.body
+      // const body = platform.body
 
       // Refresh the physics body based on any changes we made to the GameObject like position and scale
-      body.updateFromGameObject() 
+      // body.updateFromGameObject() 
+
+      if ( i > 2 ){
+
+        this.tweens.timeline({
+          targets: platform.body.velocity,
+          ease: 'Stepped',
+          // yoyo: true,
+          loop: -1,
+          tweens: [
+            { x: Phaser.Math.Between(20, 100), y: 0, duration: 2000, ease: 'Stepped' },
+            { x: Phaser.Math.Between(-100, -20), y:  0, duration: 2000, ease: 'Stepped' }
+          ],
+        }); 
+
+      }
       
     }
 
@@ -131,6 +119,16 @@ export default class Game extends Phaser.Scene {
 
     // add weight (gravity) to player
     this.player.body.setGravityY(200)
+
+
+
+    const collisionMovingPlatform = (platform, sprite) => {
+
+      if (platform.body.touching.up && sprite.body.touching.down) {
+        sprite.isOnPlatform = true;
+        sprite.currentPlatform = platform;
+      }
+    };
 
     // tell the game what things should collide
     this.physics.add.collider(this.platforms, this.player, collisionMovingPlatform)
@@ -150,7 +148,7 @@ export default class Game extends Phaser.Scene {
     })
 
     // create collidor for platform and carrot
-    this.physics.add.collider(this.platforms, this.carrots)
+    this.physics.add.collider(this.platforms, this.carrots, collisionMovingPlatform)
 
     // overlap is used to check to see if the target body, or an array of target bodies,
     // intersects with any of the given bodies.
@@ -267,6 +265,7 @@ export default class Game extends Phaser.Scene {
 
     // calling horizontalWrap method
     this.horizontalWrap(this.player)
+
 
     // for game over
     const bottomPlatform = this.findBottomMostPlatform()
