@@ -62,6 +62,7 @@ class PlayScene extends Phaser.Scene {
 
         this.rewards = this.physics.add.group();
 
+
         this.initAnims();
         this.initStartTrigger();
         this.initColliders();
@@ -294,7 +295,7 @@ class PlayScene extends Phaser.Scene {
 
     placeObstacle() {
         const obstacleNum = Math.floor(Math.random() * 7) + 1;// (total of 7 obstacles)
-        const distance = Phaser.Math.Between(600, 900);// the distance between obstacles in pixels
+        const distance = Phaser.Math.Between(900, 1500);// the distance between obstacles in pixels
         // console.log('obstacleNum',obstacleNum)
         // console.log('distance',distance)
 
@@ -319,12 +320,10 @@ class PlayScene extends Phaser.Scene {
     }
 
     placeReward() {
-        const rewardNum = Math.floor(Math.random() * 2) + 1;// (total of 2 rewards)
         const distance = Phaser.Math.Between(200, 700);// the distance between rewards in pixels
         // console.log('rewardNum',obstacleNum)
         // console.log('distance',distance)
 
-        // let reward;
 
         // reward = this.rewards
         //     .create(this.game.config.width + distance, this.game.config.height, `reward-${rewardNum}`)
@@ -333,11 +332,22 @@ class PlayScene extends Phaser.Scene {
 
 
         let reward;
+        let rewardAssets = [
+            {
+                fileName: "reward-1",
+                animationName: "reward-carrot-bunny"
+            },
+            {
+                fileName: "reward-2",
+                animationName: "reward-coin-bunny"
+            }
+        ]
+        const rewardNum = Math.floor(Math.random() * rewardAssets.length)
 
         const rewardHeight = [40, 150]; // 20,50 pixels from the ground 
         reward = this.rewards
-            .create(this.game.config.width + distance, this.game.config.height - rewardHeight[Math.floor(Math.random() * 2)], `reward-2`)
-        reward.play('reward-coin-bunny', 1);
+            .create(this.game.config.width + distance, this.game.config.height - rewardHeight[Math.floor(Math.random() * 2)], rewardAssets[rewardNum].fileName)
+        reward.play(rewardAssets[rewardNum].animationName, 1);
         reward.body.height = reward.body.height / 1.5;
 
 
