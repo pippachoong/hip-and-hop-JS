@@ -16,6 +16,8 @@ class PlayScene extends Phaser.Scene {
         this.jumpSound = this.sound.add('jump', { volume: 0.2 });
         this.hitSound = this.sound.add('hit', { volume: 0.2 });
         this.reachSound = this.sound.add('reach', { volume: 0.2 });
+        this.hitRewardSound = this.sound.add('hit-reward', { volume: 0.2 });
+
 
         this.startTrigger = this.physics.add.sprite(0, height - 200, 'bunny-idle').setOrigin(-0.5, 1).setImmovable();// wont move. also 'bunny-ilde is a plcaeholder for triggering start'
         // ^^ this is to start sprite to move. y position, 0 starts from top not bottom!
@@ -58,6 +60,8 @@ class PlayScene extends Phaser.Scene {
 
         this.obstacles = this.physics.add.group();
 
+        this.rewards = this.physics.add.group();
+
         this.initAnims();
         this.initStartTrigger();
         this.initColliders();
@@ -67,6 +71,7 @@ class PlayScene extends Phaser.Scene {
 
     // whenever it hits the obstacles
     initColliders() {
+        // bunny and obstacles
         this.physics.add.collider(this.bunny, this.obstacles, () => {
             this.highScoreText.x = this.scoreText.x - this.scoreText.width - 20; // position of score
 
@@ -86,7 +91,19 @@ class PlayScene extends Phaser.Scene {
             this.score = 0; // this is to restart the score 
             this.hitSound.play();
         }, null, this);
+
+        // bunny and rewards
+        this.physics.add.overlap(this.bunny, this.rewards, (bunny, collidedReward) => {
+            this.score += 10;
+            this.gameSpeed = 10; // controller for gamespeed 10 pixels per second
+            this.hitRewardSound.play();
+            collidedReward.disableBody(true, true);
+        }, null, this);
+
+
     }
+
+
 
     initStartTrigger() {
         const { width, height } = this.game.config;
@@ -154,6 +171,21 @@ class PlayScene extends Phaser.Scene {
             repeat: -1
         })
 
+        this.anims.create({
+            key: 'reward-carrot-bunny',
+            frames: this.anims.generateFrameNumbers('reward-1', { start: 0, end: 1 }),
+            frameRate: 5,
+            repeat: -1
+        })
+
+        this.anims.create({
+            key: 'reward-coin-bunny',
+            frames: this.anims.generateFrameNumbers('reward-2', { start: 0, end: 3 }),
+            frameRate: 10,
+            repeat: -1
+        })
+
+
     }
 
     handleScore() {
@@ -199,6 +231,7 @@ class PlayScene extends Phaser.Scene {
             this.bunny.body.offset.y = 60;
             this.physics.resume();
             this.obstacles.clear(true, true);// removing all obstacles
+            this.rewards.clear(true, true);// removing all rewards
             this.isGameRunning = true;
             this.gameOverScreen.setAlpha(0); //setAlpha(0) to be hidden
             this.anims.resumeAll();
@@ -284,6 +317,37 @@ class PlayScene extends Phaser.Scene {
 
         obstacle.setImmovable(); // wont move
     }
+
+    placeReward() {
+        const rewardNum = Math.floor(Math.random() * 2) + 1;// (total of 2 rewards)
+        const distance = Phaser.Math.Between(200, 700);// the distance between rewards in pixels
+        // console.log('rewardNum',obstacleNum)
+        // console.log('distance',distance)
+
+        // let reward;
+
+        // reward = this.rewards
+        //     .create(this.game.config.width + distance, this.game.config.height, `reward-${rewardNum}`)
+        //     //                                                                              ^^ randomly generate rewards
+        //     .setOrigin(0, 1); // setting the reward position
+
+
+        let reward;
+
+        const rewardHeight = [80, 150]; // 20,50 pixels from the ground 
+        reward = this.rewards
+            .create(this.game.config.width + distance, this.game.config.height - rewardHeight[Math.floor(Math.random() * 2)], `reward-2`)
+            .setOrigin(0, 1)
+        reward.play('reward-carrot-bunny', 1);
+        reward.body.height = reward.body.height / 1.5;
+
+
+
+        reward.setImmovable(); // wont move
+    }
+
+
+
     // 60 fps
     update(time, delta) {
         if (!this.isGameRunning) { return }
@@ -291,13 +355,17 @@ class PlayScene extends Phaser.Scene {
         this.background.tilePositionX += 2// every updateground will move 2 pixel per sec
         // create a moving ground
         this.ground.tilePositionX += this.gameSpeed;// every update(sec) as per gameSpeed
+        // .getChildren() - method to get all the obstacles as an array
         Phaser.Actions.IncX(this.obstacles.getChildren(), -this.gameSpeed);
+
+        Phaser.Actions.IncX(this.rewards.getChildren(), -this.gameSpeed);
         Phaser.Actions.IncX(this.environment.getChildren(), - 0.5); // the speed of clouds moving 0.5 pixels per sec
 
         this.respawnTime += delta * this.gameSpeed * 0.08;
         // if respawnTime is equal or more tahn 1.5secs
-        if (this.respawnTime >= 1500) {
+        if (this.respawnTime >= 800) {
             this.placeObstacle();
+            this.placeReward();
             this.respawnTime = 0;
         }
 
@@ -308,6 +376,16 @@ class PlayScene extends Phaser.Scene {
                 this.obstacles.killAndHide(obstacle);
             }
         })
+
+        this.rewards.getChildren().forEach(reward => {
+            // if it's not hitting the rewards
+            if (reward.getBounds().right < 0) {
+                // console.log('miss hitting reward!');
+                this.rewards.killAndHide(reward);
+            }
+        })
+
+
 
         this.environment.getChildren().forEach(env => {
             if (env.getBounds().right < 0) {

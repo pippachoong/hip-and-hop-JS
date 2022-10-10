@@ -13,6 +13,7 @@ class PreloadScene extends Phaser.Scene {
         this.load.audio('jump', 'assets/jump.m4a');
         this.load.audio('hit', 'assets/hit.m4a');
         this.load.audio('reach', 'assets/reach.m4a');
+        this.load.audio('hit-reward', 'assets/1_star.ogg');
 
         this.load.image('ground', 'assets/groundLayer2.png');
         this.load.image('background', 'assets/backgroundColorGrass.png');
@@ -23,8 +24,11 @@ class PreloadScene extends Phaser.Scene {
         this.load.image('cloud', 'assets/cloud1.png');
         this.load.image('cloud2', 'assets/cloud2.png');
 
-        this.load.spritesheet('star', 'assets/stars.png', {
-            frameWidth: 9, frameHeight: 9
+        this.load.spritesheet('reward-1', 'assets/carrot.png', {
+            frameWidth: 50, frameHeight: 45
+        });
+        this.load.spritesheet('reward-2', 'assets/gold_combined.png', {
+            frameWidth: 84, frameHeight: 84
         });
 
 
@@ -48,7 +52,8 @@ class PreloadScene extends Phaser.Scene {
         this.load.image('obstacle-4', 'assets/tallShroom_brown.png')
         this.load.image('obstacle-5', 'assets/tallShroom_red.png')
         this.load.image('obstacle-6', 'assets/tallShroom_red_brown.png')
-        console.log('preload end');
+
+
     }
 
     create() {

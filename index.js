@@ -13,7 +13,7 @@ const config = {
   physics: {
     default: 'arcade',
     arcade: {
-      debug: false // this is to show border box when debugging
+      debug: true // this is to show border box when debugging
     }
   },
   scene: [PreloadScene, PlayScene]
