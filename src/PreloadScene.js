@@ -27,19 +27,12 @@ class PreloadScene extends Phaser.Scene {
             frameWidth: 9, frameHeight: 9
         });
 
-        this.load.spritesheet('moon', 'assets/moon.png', {
-            frameWidth: 20, frameHeight: 40
-        });
 
         this.load.spritesheet('bunny', 'assets/bunny-updated.png', {
             frameWidth: 88,
             frameHeight: 151
         })
 
-        this.load.spritesheet('bunny-down', 'assets/dino-down.png', {
-            frameWidth: 118,
-            frameHeight: 94
-        })
 
         this.load.spritesheet('enemy-bird', 'assets/wingMan.png', {
             // frameWidth: 92,

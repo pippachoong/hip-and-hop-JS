@@ -8,7 +8,7 @@ class PlayScene extends Phaser.Scene {
 
     create() {
         const { height, width } = this.game.config;
-        this.gameSpeed = 20; // control 
+        this.gameSpeed = 15; // control 
         this.isGameRunning = false;
         this.respawnTime = 0;
         this.score = 0;
@@ -27,7 +27,7 @@ class PlayScene extends Phaser.Scene {
             .setCollideWorldBounds(true)
             .setGravityY(5000) // 5000 pixels per second
             .setBodySize(44, 92)
-            .setDepth(1)
+            .setDepth(1) // main character is always shown front of the canvas
             .setOrigin(0, 1);
 
         // display of score 
@@ -209,15 +209,7 @@ class PlayScene extends Phaser.Scene {
             this.bunny.body.height = 92;
             this.bunny.body.offset.y = 60;
             this.bunny.setVelocityY(-1600);
-            this.bunny.setTexture('bunny', 60);
-        })
-
-        this.input.keyboard.on('keydown_DOWN', () => {
-            // if it's not touching the floor dont provide velocity or not running
-            if (!this.bunny.body.onFloor() || !this.isGameRunning) { return; }
-            // this is state of docking down
-            this.bunny.body.height = 58;
-            this.bunny.body.offset.y = 34;
+            // this.bunny.setTexture('bunny', 0);
         })
 
         this.input.keyboard.on('keyup_DOWN', () => {
