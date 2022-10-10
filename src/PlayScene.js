@@ -94,7 +94,7 @@ class PlayScene extends Phaser.Scene {
 
         // bunny and rewards
         this.physics.add.overlap(this.bunny, this.rewards, (bunny, collidedReward) => {
-            this.score += 10;
+            this.score += 50;
             this.gameSpeed = 10; // controller for gamespeed 10 pixels per second
             this.hitRewardSound.play();
             collidedReward.disableBody(true, true);
@@ -300,7 +300,7 @@ class PlayScene extends Phaser.Scene {
 
         let obstacle;
         if (obstacleNum > 6) {
-            const enemyHeight = [30, 60]; // 20,50 pixels from the ground 
+            const enemyHeight = [40, 100]; // 20,50 pixels from the ground 
             obstacle = this.obstacles
                 .create(this.game.config.width + distance, this.game.config.height - enemyHeight[Math.floor(Math.random() * 2)], `enemy-bird`)
                 .setOrigin(0, 1)
@@ -334,11 +334,10 @@ class PlayScene extends Phaser.Scene {
 
         let reward;
 
-        const rewardHeight = [80, 150]; // 20,50 pixels from the ground 
+        const rewardHeight = [40, 150]; // 20,50 pixels from the ground 
         reward = this.rewards
             .create(this.game.config.width + distance, this.game.config.height - rewardHeight[Math.floor(Math.random() * 2)], `reward-2`)
-            .setOrigin(0, 1)
-        reward.play('reward-carrot-bunny', 1);
+        reward.play('reward-coin-bunny', 1);
         reward.body.height = reward.body.height / 1.5;
 
 

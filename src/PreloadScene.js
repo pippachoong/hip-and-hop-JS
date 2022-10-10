@@ -27,8 +27,8 @@ class PreloadScene extends Phaser.Scene {
         this.load.spritesheet('reward-1', 'assets/carrot.png', {
             frameWidth: 50, frameHeight: 45
         });
-        this.load.spritesheet('reward-2', 'assets/gold_combined.png', {
-            frameWidth: 84, frameHeight: 84
+        this.load.spritesheet('reward-2', 'assets/gold_combined(1).png', {
+            frameWidth: 60, frameHeight: 60
         });
 
 
