@@ -2,7 +2,7 @@ import Phaser from '../lib/phaser.js'
 
 export default class MovingPlatform extends Phaser.Physics.Matter.Image {
   constructor(scene, x, y, texture, options){
-    super(scene.matter.world, x, y, texture, 0, options)
+    super(scene, x, y, texture, 0, options)
 
     scene.add.existing(this)
 

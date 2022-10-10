@@ -59,19 +59,45 @@ export default class Game extends Phaser.Scene {
   // create() is called once all the assets for the Scene have been loaded.
   // only assets that have been loaded using preload() can be used in create
   create(){
-
+    window.game = this
     this.background = this.add.image(240, 320, 'background') // (xPos, yPos, key in preload())
       .setScrollFactor(1, 0) 
       // by setting y scroll factor to 0 we can keep the background from scrolling up and down with the camera
     
     // create a group of static platforms
-    this.platforms = this.physics.add.staticGroup()
+    this.platforms = this.physics.add.group()
+    this.movingPlatform = this.physics.add.image(100, 200, 'platform')
+      .setImmovable(true)
+      .setVelocity(0, 0);
 
+    this.movingPlatform.body.setAllowGravity(false);
+
+    this.tweens.timeline({
+      targets: this.movingPlatform.body.velocity,
+      loop: -1,
+      tweens: [
+        { x:    50, y: 0, duration: 2000, ease: 'Stepped' },
+        { x:    -50, y:  0, duration: 2000, ease: 'Stepped' },
+        // { x:  150, y:  100, duration: 4000, ease: 'Stepped' },
+        // { x:    0, y: -200, duration: 2000, ease: 'Stepped' },
+        // { x:    0, y:    0, duration: 1000, ease: 'Stepped' },
+        // { x: -150, y:  100, duration: 4000, ease: 'Stepped' }
+      ]
+    });
+
+    const collisionMovingPlatform = (platform, sprite) => {
+
+      if (platform.body.touching.up && sprite.body.touching.down) {
+        sprite.isOnPlatform = true;
+        sprite.currentPlatform = platform;      
+      }
+    };
+ 
+    
     // create base platform
     this.basePlatform = this.physics.add.staticGroup()
     this.base = this.basePlatform.create(240, 600, 'platform').setScale(2).refreshBody()
 
-    
     // debugging text
     this.debugText = this.add.text(10, 10, 'debugging text', {font: '12px Courier', fill: '#000000'})
     this.debugText.setScrollFactor(0)
@@ -79,7 +105,6 @@ export default class Game extends Phaser.Scene {
     this.secondDebugText = this.add.text(10, 60, 'debugging text', {font: '12px Courier', fill: '#000000'})
     this.secondDebugText.setScrollFactor(0)
 
-    console.log(this)
 
     // then create 5 platforms from the group
     for (let i = 0; i < 5; i++) {
@@ -88,26 +113,12 @@ export default class Game extends Phaser.Scene {
       const y =  160 * i // set 150 pixels apart vertically
 
       const platform = this.platforms.create(x, y, 'platform')
+        .setImmovable(true)
+        .setVelocity(0, 0);
+
+      platform.body.setAllowGravity(false);
+    
       platform.scale = 0.5
-
-      if ( i === 4 ){
-        
-        // const movingPlatform = new MovingPlatform(this.scene, x, y, 'platform', {
-        //   isStatic: true
-        // })
-
-        // movingPlatform.moveHorizontally()
-
-        this.tweens.add({
-          targets: platform,
-          x: 500,
-          duration: 3000,
-          ease: 'Power2',
-          repeat: -1,
-          yoyo: true,
-        })
-
-      }
 
       const body = platform.body
 
@@ -122,8 +133,10 @@ export default class Game extends Phaser.Scene {
     this.player.body.setGravityY(200)
 
     // tell the game what things should collide
-    this.physics.add.collider(this.platforms, this.player)
+    this.physics.add.collider(this.platforms, this.player, collisionMovingPlatform)
     this.physics.add.collider(this.basePlatform, this.player)
+    
+    // this.physics.add.collider(this.movingPlatform, this.player, collisionMovingPlatform )
     
     // follow the player as it jumps
     this.cameras.main.startFollow(this.player)
@@ -185,7 +198,7 @@ export default class Game extends Phaser.Scene {
       frameRate: 20
     })
 
-    console.log(this.anims)
+    // console.log(this.anims)
     
   } // create()
 
@@ -226,7 +239,8 @@ export default class Game extends Phaser.Scene {
     // so that the bunny can jump to above platforms directly below the platform
     this.player.body.checkCollision.up = false
     this.player.body.checkCollision.left = false
-    this.player.body.checkCollision.right = false 
+    this.player.body.checkCollision.right = false
+    
 
     // disable base platform when player traverse far enough
     if (this.player.y < 0){
@@ -244,8 +258,8 @@ export default class Game extends Phaser.Scene {
       // console.log(scrollY)
       if (platform.y >= scrollY + 700){
         platform.y = scrollY - Phaser.Math.Between(50, 100)
-        platform.body.updateFromGameObject()
-
+        
+        // platform.body.updateFromGameObject()
         // create a carrot above the platform being reused
         this.addCarrotAbove(platform)
       }
