@@ -3,6 +3,9 @@ import Phaser from '../lib/phaser.js'
 // import the carrot class here
 import Carrot from '../game/Carrot.js'
 
+// import moving platform
+import MovingPlatform from '../game/MovingPlatform.js'
+
 
 export default class Game extends Phaser.Scene {
   constructor(){
@@ -23,9 +26,8 @@ export default class Game extends Phaser.Scene {
 
   // debugging text to display
   debugText
+  secondDebugText
 
-  // debugging object
-  debugObject
 
   // init() method is called by Phaser before preload().
   init(){
@@ -58,7 +60,7 @@ export default class Game extends Phaser.Scene {
   // only assets that have been loaded using preload() can be used in create
   create(){
 
-    this.add.image(240, 320, 'background') // (xPos, yPos, key in preload())
+    this.background = this.add.image(240, 320, 'background') // (xPos, yPos, key in preload())
       .setScrollFactor(1, 0) 
       // by setting y scroll factor to 0 we can keep the background from scrolling up and down with the camera
     
@@ -67,21 +69,45 @@ export default class Game extends Phaser.Scene {
 
     // create base platform
     this.basePlatform = this.physics.add.staticGroup()
-    this.basePlatform.create(240, 600, 'platform').setScale(2).refreshBody()
+    this.base = this.basePlatform.create(240, 600, 'platform').setScale(2).refreshBody()
 
-    // set collider for base platform
+    
     // debugging text
     this.debugText = this.add.text(10, 10, 'debugging text', {font: '12px Courier', fill: '#000000'})
     this.debugText.setScrollFactor(0)
+
+    this.secondDebugText = this.add.text(10, 60, 'debugging text', {font: '12px Courier', fill: '#000000'})
+    this.secondDebugText.setScrollFactor(0)
+
+    console.log(this)
 
     // then create 5 platforms from the group
     for (let i = 0; i < 5; i++) {
       
       const x = Phaser.Math.Between(80, 400) // create a random number between 80 to 400
-      const y =  150 * i // set 150 pixels apart vertically
+      const y =  160 * i // set 150 pixels apart vertically
 
       const platform = this.platforms.create(x, y, 'platform')
       platform.scale = 0.5
+
+      if ( i === 4 ){
+        
+        // const movingPlatform = new MovingPlatform(this.scene, x, y, 'platform', {
+        //   isStatic: true
+        // })
+
+        // movingPlatform.moveHorizontally()
+
+        this.tweens.add({
+          targets: platform,
+          x: 500,
+          duration: 3000,
+          ease: 'Power2',
+          repeat: -1,
+          yoyo: true,
+        })
+
+      }
 
       const body = platform.body
 
@@ -98,9 +124,9 @@ export default class Game extends Phaser.Scene {
     // tell the game what things should collide
     this.physics.add.collider(this.platforms, this.player)
     this.physics.add.collider(this.basePlatform, this.player)
-
+    
     // follow the player as it jumps
-    this.cameras.main.startFollow(this.player)   
+    this.cameras.main.startFollow(this.player)
 
     // set the horizontal dead zone to 1.5x game width
     this.cameras.main.setDeadzone(this.scale.width * 1.5)
@@ -202,6 +228,12 @@ export default class Game extends Phaser.Scene {
     this.player.body.checkCollision.left = false
     this.player.body.checkCollision.right = false 
 
+    // disable base platform when player traverse far enough
+    if (this.player.y < 0){
+      this.basePlatform.killAndHide(this.base)
+      this.physics.world.disableBody(this.base.body)
+    }
+
     // takes platforms from the bottom of the screen and moves them to the top
     // iterate through the children in the group
     this.platforms.children.iterate( child => {
@@ -235,6 +267,11 @@ export default class Game extends Phaser.Scene {
       `object: ${this.player}`,
       `x: ${this.player.x}`,
       `y: ${this.player.y}`,
+    ])
+
+    this.secondDebugText.setText([
+      `object: scrollY`,
+      `value: ${this.cameras.main.scrollY}`,
     ])
 
 
