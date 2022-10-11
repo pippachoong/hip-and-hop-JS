@@ -16,7 +16,8 @@ const config = {
       debug: true // this is to show border box when debugging
     }
   },
-  scene: [PreloadScene, PlayScene]
+  scene: [PreloadScene, PlayScene],
+
 };
 
 new Phaser.Game(config);
