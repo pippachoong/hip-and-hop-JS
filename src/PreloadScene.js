@@ -16,7 +16,7 @@ class PreloadScene extends Phaser.Scene {
         this.load.audio('hit-reward', 'assets/Square_removed2.ogg');
 
         this.load.image('ground', 'assets/groundLayer2.png');
-        this.load.image('background', 'assets/backgroundColorGrass.png');
+        this.load.image('background', 'assets/backgroundColorGrass2.png');
         this.load.image('bunny-idle', 'assets/bunny2_ready.png');
         this.load.image('bunny-hurt', 'assets/bunny2_hurt.png');
         this.load.image('restart', 'assets/restart.png');
