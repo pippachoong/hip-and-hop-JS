@@ -6,7 +6,24 @@ class PlayScene extends Phaser.Scene {
         super('PlayScene');
     }
 
-    create() {
+    create(){
+        window.game = this
+
+        let BASE_URL = 'http://localhost:3000'
+    
+        const token = localStorage.getItem("token")
+        axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
+
+        axios.get(`${BASE_URL}/current_user`)
+        .then( res => {
+            console.log(res)
+            this.playerName = res.data.name
+            // this.playerHopScore = res.data.hopScore
+            console.log(this.playerName)
+        })
+
+        // console.log(this.playerName)
+
         const { height, width } = this.game.config;
 
         this.gameSpeed = 10; // control 

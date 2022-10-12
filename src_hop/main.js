@@ -2,6 +2,7 @@ import Phaser from './lib/phaser.js'
 import Game from './scenes/Game.js'
 import GameOver from './scenes/GameOver.js'
 
+
 export default new Phaser.Game({
 
   // Phaser.AUTO meaning Phaser will decide to use Canvas or WebGL mode depending on the browser and devide.

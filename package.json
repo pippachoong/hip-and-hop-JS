@@ -1,10 +1,26 @@
 {
   "dependencies": {
-    "css-doodle": "^0.30.3",
+    "axios": "^1.1.2",
     "http-server": "^14.1.1",
     "phaser": "^3.55.2"
   },
-  "devDependencies": {
-    "sass": "^1.55.0"
-  }
+  "name": "hip-and-hop-frontend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pippachoong/hip-and-hop-frontend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pippachoong/hip-and-hop-frontend/issues"
+  },
+  "homepage": "https://github.com/pippachoong/hip-and-hop-frontend#readme",
+  "description": ""
 }

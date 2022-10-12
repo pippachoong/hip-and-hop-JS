@@ -3,10 +3,6 @@ import Phaser from '../lib/phaser.js'
 // import the carrot class here
 import Carrot from '../game/Carrot.js'
 
-// import moving platform
-import MovingPlatform from '../game/MovingPlatform.js'
-
-
 export default class Game extends Phaser.Scene {
   constructor(){
     super('game')
@@ -15,6 +11,10 @@ export default class Game extends Phaser.Scene {
   // type - {Phaser.Physics.Arcade.Sprite}
   // declaration of the player property that will be used as this.player
   player
+
+  playerName
+
+  playerHopScore
 
   platforms
 
@@ -31,6 +31,7 @@ export default class Game extends Phaser.Scene {
 
   // init() method is called by Phaser before preload().
   init(){
+    
     this.carrotsCollected = 0
   }
 
@@ -59,7 +60,26 @@ export default class Game extends Phaser.Scene {
   // create() is called once all the assets for the Scene have been loaded.
   // only assets that have been loaded using preload() can be used in create
   create(){
+    
+    let BASE_URL = 'http://localhost:3000'
+    
+    const token = localStorage.getItem("token")
+    axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
+
+    // this is the axios get to get the logged in user name
+    axios.get(`${BASE_URL}/current_user`)
+      .then( res => {
+        console.log(res)
+        this.playerName = res.data.name
+        // this.playerHopScore = res.data.hopScore
+        console.log(this.playerName)
+      })
+      .catch( err => {
+        console.log('error getting user name:', err)
+      })
+
     window.game = this
+
     this.background = this.add.image(240, 320, 'background') // (xPos, yPos, key in preload())
       .setScrollFactor(1, 0) 
       // by setting y scroll factor to 0 we can keep the background from scrolling up and down with the camera
@@ -272,7 +292,10 @@ export default class Game extends Phaser.Scene {
     
     // if player is past 200 pixels than the bottom most platform, it will be game over
     if (this.player.y > bottomPlatform.y + 200){
-      this.scene.start('game-over')
+      this.scene.start('game-over', {
+        score: this.carrotsCollected,
+        playerName: this.playerName
+      })
     }
 
 
@@ -341,6 +364,7 @@ export default class Game extends Phaser.Scene {
     // increment by 1 when carrot is picked up
     this.carrotsCollected++
 
+    console.log(this.carrotsCollected)
     // create new text value and set it
     const value = `Carrots: ${this.carrotsCollected}`
     this.carrotsCollectedText.text = value
@@ -376,6 +400,8 @@ export default class Game extends Phaser.Scene {
   
 
 }
+
+
 
 
 
