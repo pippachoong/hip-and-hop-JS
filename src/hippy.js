@@ -1,3 +1,4 @@
+import EndScene from './EndScene.js';
 import Phaser from './lib/phaser.js'
 import PlayScene from './PlayScene.js';
 import PreloadScene from './PreloadScene.js';
@@ -15,7 +16,7 @@ const config = {
             debug: false
         }
     },
-    scene: [PreloadScene, PlayScene]
+    scene: [PreloadScene, PlayScene, EndScene]
 };
 
 new Phaser.Game(config);
