@@ -15,7 +15,7 @@ $( function(){
 
   $('#login-form').on('submit', function(ev){
 
-    ev.preventDefault()
+
     const email = $('#email').val()
     const password = $('#password').val()
 
