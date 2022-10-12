@@ -74,6 +74,9 @@ export default class Game extends Phaser.Scene {
         // this.playerHopScore = res.data.hopScore
         console.log(this.playerName)
       })
+      .catch( err => {
+        console.log('error getting user name:', err)
+      })
 
     window.game = this
 

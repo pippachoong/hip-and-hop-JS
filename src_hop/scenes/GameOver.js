@@ -23,6 +23,9 @@ export default class GameOver extends Phaser.Scene {
       .then( res => {
         console.log('new score:', res.data)
       })
+      .catch( err => {
+        console.log('Error posting results:', err)
+      })
 
     // this is the axios get to grab the top 5 user name and their score, and show it in a screen
     axios.get(`${BASE_URL}/hop-scores`, {
@@ -48,6 +51,9 @@ export default class GameOver extends Phaser.Scene {
         })
         .setOrigin(0.5)
 
+      })
+      .catch( err => {
+        console.log('error getting scores:', err)
       })
 
 
