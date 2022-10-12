@@ -66,11 +66,12 @@ export default class Game extends Phaser.Scene {
     const token = localStorage.getItem("token")
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
 
+    // this is the axios get to get the logged in user name
     axios.get(`${BASE_URL}/current_user`)
       .then( res => {
         console.log(res)
         this.playerName = res.data.name
-        this.playerHopScore = res.data.hopScore
+        // this.playerHopScore = res.data.hopScore
         console.log(this.playerName)
       })
 
