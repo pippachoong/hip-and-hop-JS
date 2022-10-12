@@ -21,6 +21,7 @@ class PreloadScene extends Phaser.Scene {
         this.load.image('bunny-idle', 'assets/bunny2_ready.png');
         this.load.image('bunny-hurt', 'assets/bunny2_hurt.png');
         this.load.image('restart', 'assets/restart3.png');
+        this.load.image('results', 'assets/results.png');
         this.load.image('game-over', 'assets/game-over.png');
         this.load.image('cloud', 'assets/cloud1.png');
         this.load.image('cloud2', 'assets/cloud2.png');

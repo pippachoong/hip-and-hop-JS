@@ -83,12 +83,20 @@ class PlayScene extends Phaser.Scene {
             this.welcome
         ])
 
+        // this.gameOverScreen = this.add.container(width / 2, height / 2 - 50).setAlpha(0) // setAlpha(0) to be hidden
+        // this.gameOverText = this.add.image(0, 0, 'game-over');
+        // this.restart = this.add.image(0, 80, 'restart').setInteractive();// setInteractive() add event handlers
+        // this.gameOverScreen.add([
+        //     this.gameOverText, this.restart
+        // ])
+
         this.gameOverScreen = this.add.container(width / 2, height / 2 - 50).setAlpha(0) // setAlpha(0) to be hidden
         this.gameOverText = this.add.image(0, 0, 'game-over');
-        this.restart = this.add.image(0, 80, 'restart').setInteractive();// setInteractive() add event handlers
+        this.results = this.add.image(0, 80, 'results').setInteractive();// setInteractive() add event handlers
         this.gameOverScreen.add([
-            this.gameOverText, this.restart
+            this.gameOverText, this.results
         ])
+
 
         this.obstacles = this.physics.add.group();
 
@@ -122,12 +130,12 @@ class PlayScene extends Phaser.Scene {
             this.gameSpeed = 10; // controller for gamespeed 10 pixels per second
 
             // console.log(this.score, this.playerName)
-            this.scene.start('end-scene', {
-                score: this.score,
-                playerName: this.playerName
-            })
+            // this.scene.start('end-scene', {
+            //     score: this.score,
+            //     playerName: this.playerName
+            // })
             this.gameOverScreen.setAlpha(1); // setAlpha(1) to show game over image
-            this.score = 0; // this is to restart the score 
+            // this.score = 0; // this is to restart the score 
             this.hitSound.play();
         }, null, this);
 
@@ -258,18 +266,28 @@ class PlayScene extends Phaser.Scene {
     }
 
     handleInputs() {
-        this.restart.on('pointerdown', () => {
-            // resetting to all initial state
+        // this.restart.on('pointerdown', () => {
+        //     // resetting to all initial state
 
-            this.bunny.setVelocityY(60); //previous (0)
-            this.bunny.body.height = 92;
-            this.bunny.body.offset.y = 60;
-            this.physics.resume();
-            this.obstacles.clear(true, true);// removing all obstacles
-            this.rewards.clear(true, true);// removing all rewards
-            this.isGameRunning = true;
-            this.gameOverScreen.setAlpha(0); //setAlpha(0) to be hidden
-            this.anims.resumeAll();
+        //     this.bunny.setVelocityY(60); //previous (0)
+        //     this.bunny.body.height = 92;
+        //     this.bunny.body.offset.y = 60;
+        //     this.physics.resume();
+        //     this.obstacles.clear(true, true);// removing all obstacles
+        //     this.rewards.clear(true, true);// removing all rewards
+        //     this.isGameRunning = true;
+        //     this.gameOverScreen.setAlpha(0); //setAlpha(0) to be hidden
+        //     this.anims.resumeAll();
+        // })
+
+        this.results.on('pointerdown', () => {
+
+            console.log('results!')
+            console.log('results passed?', this.score, this.playerName)
+            this.scene.start('end-scene', {
+                score: this.score,
+                playerName: this.playerName
+            })
         })
 
         this.input.keyboard.on('keydown_UP', () => {

@@ -43,10 +43,11 @@ export default class EndScene extends Phaser.Scene {
                     textContent.push(perLineResults)
 
                 }
-                console.log(textContent)
+                console.log('textcontent', textContent)
 
                 const width = this.scale.width
                 const height = this.scale.height
+                console.log('width and height', width, height);
                 this.add.text(width * 0.5, height * 0.5, textContent, {
                     fontSize: 30
                 })
