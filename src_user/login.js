@@ -1,7 +1,6 @@
 // import { axios } from "../src_lib/axios"
 
 console.log('loaded')
-console.log('loaded2')
 
 // let BASE_URL;
 // if( process.env.NODE_ENV === 'development'){
@@ -37,7 +36,9 @@ const handleSubmit = async (email, password) => {
       passwordDigest: password
     })
 
-    console.log(`post response:`, res.data)
+    console.log(`post response:`, res.data.token)
+
+    localStorage.setItem("token", res.data.token)
 
     window.location.replace('/home.html')
 
