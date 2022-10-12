@@ -8,6 +8,7 @@ class PlayScene extends Phaser.Scene {
 
     create() {
         const { height, width } = this.game.config;
+
         this.gameSpeed = 10; // control 
         this.isGameRunning = false;
         this.respawnTime = 0;
@@ -18,6 +19,12 @@ class PlayScene extends Phaser.Scene {
         this.reachSound = this.sound.add('reach', { volume: 0.2 });
         this.hitRewardSound = this.sound.add('hit-reward', { volume: 0.2 });
 
+
+        // this.welcomeScreen = this.add.container(width / 2, height / 2 - 50).setAlpha(1) // setAlpha(0) to be hidden
+        // this.welcome = this.add.image(0, 0, 'welcome');
+        // this.welcomeScreen.add([
+        //     this.welcome
+        // ])
 
         this.startTrigger = this.physics.add.sprite(0, height - 200, 'bunny-idle').setOrigin(-0.5, 1).setImmovable();// wont move. also 'bunny-ilde is a plcaeholder for triggering start'
         // ^^ this is to start sprite to move. y position, 0 starts from top not bottom!

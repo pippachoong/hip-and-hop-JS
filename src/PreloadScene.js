@@ -9,7 +9,8 @@ class PreloadScene extends Phaser.Scene {
     }
 
     preload() {
-        console.log('preload begin');
+        this.load.image('welcome', 'assets/welcome.png')
+
         this.load.audio('jump', 'assets/jump.m4a');
         this.load.audio('hit', 'assets/hit.m4a');
         this.load.audio('reach', 'assets/reach.m4a');
@@ -19,7 +20,7 @@ class PreloadScene extends Phaser.Scene {
         this.load.image('background', 'assets/backgroundColorGrass2.png');
         this.load.image('bunny-idle', 'assets/bunny2_ready.png');
         this.load.image('bunny-hurt', 'assets/bunny2_hurt.png');
-        this.load.image('restart', 'assets/restart.png');
+        this.load.image('restart', 'assets/restart3.png');
         this.load.image('game-over', 'assets/game-over.png');
         this.load.image('cloud', 'assets/cloud1.png');
         this.load.image('cloud2', 'assets/cloud2.png');

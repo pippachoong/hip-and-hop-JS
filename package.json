@@ -3,5 +3,8 @@
     "css-doodle": "^0.30.3",
     "http-server": "^14.1.1",
     "phaser": "^3.55.2"
+  },
+  "devDependencies": {
+    "sass": "^1.55.0"
   }
 }
