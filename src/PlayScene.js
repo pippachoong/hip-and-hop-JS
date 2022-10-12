@@ -121,10 +121,11 @@ class PlayScene extends Phaser.Scene {
             this.respawnTime = 0;
             this.gameSpeed = 10; // controller for gamespeed 10 pixels per second
 
-            this.scene.start('end-scene'), {
+            // console.log(this.score, this.playerName)
+            this.scene.start('end-scene', {
                 score: this.score,
                 playerName: this.playerName
-            }
+            })
             this.gameOverScreen.setAlpha(1); // setAlpha(1) to show game over image
             this.score = 0; // this is to restart the score 
             this.hitSound.play();

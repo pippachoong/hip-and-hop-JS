@@ -6,6 +6,7 @@ export default class EndScene extends Phaser.Scene {
     }
 
     init(data) {
+        console.log('data', data)
         this.score = data.score
         this.playerName = data.playerName
 
