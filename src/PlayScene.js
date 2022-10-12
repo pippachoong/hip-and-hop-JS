@@ -240,14 +240,14 @@ class PlayScene extends Phaser.Scene {
             this.anims.resumeAll();
         })
 
-        this.input.keyboard.on('keydown_SPACE', () => {
+        this.input.keyboard.on('keydown_UP', () => {
             // if it's not touching the floor 
             if (this.bunny.body.velocity.x > 0) { return; }
 
             this.jumpSound.play();
             this.bunny.body.height = 92;
             this.bunny.body.offset.y = 60;
-            this.bunny.setVelocityY(-1200);
+            this.bunny.setVelocityY(-1500);
             // this.bunny.setTexture('bunny', 0);
         })
 
