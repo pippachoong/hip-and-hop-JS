@@ -6,21 +6,25 @@ class PlayScene extends Phaser.Scene {
         super('PlayScene');
     }
 
-    create(){
-        window.game = this
+    create() {
+        window.game = this // game debugger
 
         let BASE_URL = 'http://localhost:3000'
-    
+
         const token = localStorage.getItem("token")
         axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
 
+        // this is the axios get to get the logged in user name
         axios.get(`${BASE_URL}/current_user`)
-        .then( res => {
-            console.log(res)
-            this.playerName = res.data.name
-            // this.playerHopScore = res.data.hopScore
-            console.log(this.playerName)
-        })
+            .then(res => {
+                console.log(res)
+                this.playerName = res.data.name
+                // this.playerHopScore = res.data.hopScore
+                console.log(this.playerName)
+            })
+            .catch(err => {
+                console.log('Error getting playerName:', err)
+            })
 
         // console.log(this.playerName)
 
@@ -347,12 +351,6 @@ class PlayScene extends Phaser.Scene {
         const distance = Phaser.Math.Between(200, 700);// the distance between rewards in pixels
         // console.log('rewardNum',obstacleNum)
         // console.log('distance',distance)
-
-
-        // reward = this.rewards
-        //     .create(this.game.config.width + distance, this.game.config.height, `reward-${rewardNum}`)
-        //     //                                                                              ^^ randomly generate rewards
-        //     .setOrigin(0, 1); // setting the reward position
 
 
         let reward;
