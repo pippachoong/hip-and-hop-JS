@@ -20,11 +20,7 @@ class PlayScene extends Phaser.Scene {
         this.hitRewardSound = this.sound.add('hit-reward', { volume: 0.2 });
 
 
-        // this.welcomeScreen = this.add.container(width / 2, height / 2 - 50).setAlpha(1) // setAlpha(0) to be hidden
-        // this.welcome = this.add.image(0, 0, 'welcome');
-        // this.welcomeScreen.add([
-        //     this.welcome
-        // ])
+
 
         this.startTrigger = this.physics.add.sprite(0, height - 200, 'bunny-idle').setOrigin(-0.5, 1).setImmovable();// wont move. also 'bunny-ilde is a plcaeholder for triggering start'
         // ^^ this is to start sprite to move. y position, 0 starts from top not bottom!
@@ -59,6 +55,12 @@ class PlayScene extends Phaser.Scene {
             this.add.image((width / 1.3), 100, 'cloud')
         ]);
         this.environment.setAlpha(0);// display them only when the game starts
+
+        this.welcomeScreen = this.add.container(width / 2, height / 2 - 50).setAlpha(1) // setAlpha(0) to be hidden
+        this.welcome = this.add.image(0, 0, 'welcome');
+        this.welcomeScreen.add([
+            this.welcome
+        ])
 
         this.gameOverScreen = this.add.container(width / 2, height / 2 - 50).setAlpha(0) // setAlpha(0) to be hidden
         this.gameOverText = this.add.image(0, 0, 'game-over');
@@ -119,17 +121,15 @@ class PlayScene extends Phaser.Scene {
         const { width, height } = this.game.config;
         this.physics.add.overlap(this.startTrigger, this.bunny, () => {
             console.log('trigger & bunny collided!');
+            this.welcomeScreen.setAlpha(0)
             if (this.startTrigger.y === 10) {
-                //                      ^^ as per line 22
                 this.startTrigger.body.reset(0, 0);
                 console.log('returned');
                 return;
             }
-            console.log('skipped trigger check');
             // as soon as it jumps and hits
             this.startTrigger.disableBody(true, true);
             // console.log('ceiling's hit')
-
             const startEvent = this.time.addEvent({
                 delay: 1000 / 60,
                 loop: true,
@@ -137,11 +137,9 @@ class PlayScene extends Phaser.Scene {
                 callback: () => {
                     this.bunny.setVelocityX(80);// 80 pixels     
                     this.bunny.play('bunny-run', 1); // 
-
                     if (this.ground.width < width) {
                         this.ground.width += 17 * 2;
                     }
-
                     if (this.ground.width >= 1000) {
                         this.ground.width = width;
                         this.isGameRunning = true;
