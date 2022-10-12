@@ -16,7 +16,7 @@ class PreloadScene extends Phaser.Scene {
         this.load.audio('hit-reward', 'assets/Square_removed2.ogg');
 
         this.load.image('ground', 'assets/groundLayer2.png');
-        this.load.image('background', 'assets/backgroundColorGrass.png');
+        this.load.image('background', 'assets/backgroundColorGrass2.png');
         this.load.image('bunny-idle', 'assets/bunny2_ready.png');
         this.load.image('bunny-hurt', 'assets/bunny2_hurt.png');
         this.load.image('restart', 'assets/restart.png');
@@ -24,7 +24,7 @@ class PreloadScene extends Phaser.Scene {
         this.load.image('cloud', 'assets/cloud1.png');
         this.load.image('cloud2', 'assets/cloud2.png');
 
-        this.load.spritesheet('reward-1', 'assets/carrot.png', {
+        this.load.spritesheet('reward-1', 'assets/carrot_combined.png', {
             frameWidth: 50, frameHeight: 45
         });
         this.load.spritesheet('reward-2', 'assets/gold_combined(1).png', {

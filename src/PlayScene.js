@@ -8,7 +8,7 @@ class PlayScene extends Phaser.Scene {
 
     create() {
         const { height, width } = this.game.config;
-        this.gameSpeed = 15; // control 
+        this.gameSpeed = 10; // control 
         this.isGameRunning = false;
         this.respawnTime = 0;
         this.score = 0;
@@ -242,12 +242,12 @@ class PlayScene extends Phaser.Scene {
 
         this.input.keyboard.on('keydown_SPACE', () => {
             // if it's not touching the floor 
-            if (!this.bunny.body.onFloor() || this.bunny.body.velocity.x > 0) { return; }
+            if (this.bunny.body.velocity.x > 0) { return; }
 
             this.jumpSound.play();
             this.bunny.body.height = 92;
             this.bunny.body.offset.y = 60;
-            this.bunny.setVelocityY(-1600);
+            this.bunny.setVelocityY(-1200);
             // this.bunny.setTexture('bunny', 0);
         })
 
