@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Alfa+Slab+One&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Sacramento:400');
 
 canvas {
     display: block;
@@ -50,6 +51,7 @@ body {
     transition: all .4s ease-in-out;
     background-image: linear-gradient(to right, #25aae1, #40e495, #30dd8a, #2bb673);
     box-shadow: 0 4px 15px 0 rgba(49, 196, 190, 0.75);
+    
 }
 
 .home:hover {
@@ -76,12 +78,23 @@ body {
 /*--------------TITLE -----------------*/
 
 .neonText {
-  animation: flicker 1.5s infinite alternate;
+  animation: flicker 3s infinite alternate;
   color: #fff;
+  
+}
+
+header {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    align-items: center;
 }
 
 h2 {
-  font-size: 4.2rem;    
+    font-size: 4.2rem;    
+    font-family: "Sacramento", sans-serif;
+    display: inherit;
+    text-align: center;
+    margin: 20px;
 }
 
 /* Flickering animation */
