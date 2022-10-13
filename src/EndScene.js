@@ -14,7 +14,7 @@ export default class EndScene extends Phaser.Scene {
 
     create() {
 
-        let BASE_URL;
+        let BAgitSE_URL;
         if (location.href.includes('netlify')) {
             BASE_URL = 'https://hipandhop.herokuapp.com';
         } else {
