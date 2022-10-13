@@ -51,8 +51,9 @@ export default class GameOver extends Phaser.Scene {
         } else {
           textContent = ["GAME____OVER", "", "Sign Up / Log In", "to store your scores!"]
         }
-
-        console.log(textContent)
+        textContent.push('')
+        textContent.push('press SPACEBAR')
+        textContent.push('to play again!')
 
         const width = this.scale.width
         const height = this.scale.height

@@ -32,6 +32,10 @@ const handleSignup = async (name, email, password) => {
 
     console.log(`signup response:`, res.data)
 
+    localStorage.setItem("token", res.data.token)
+
+    window.location.replace('/index.html')
+
   } catch ( err ){
     console.log('error creating user:', err)
   }

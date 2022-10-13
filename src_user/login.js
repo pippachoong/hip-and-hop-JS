@@ -1,6 +1,6 @@
 // import { axios } from "../src_lib/axios"
 
-console.log('loaded')
+console.log('login loaded')
 
 // let BASE_URL;
 // if( process.env.NODE_ENV === 'development'){
@@ -15,7 +15,7 @@ $( function(){
 
   $('#login-form').on('submit', function(ev){
 
-
+    ev.preventDefault()
     const email = $('#email').val()
     const password = $('#password').val()
 
@@ -40,7 +40,7 @@ const handleSubmit = async (email, password) => {
 
     localStorage.setItem("token", res.data.token)
 
-    window.location.replace('/home.html')
+    window.location.replace('/index.html')
 
   }catch(err){
     console.log(`error logging in:`, err)

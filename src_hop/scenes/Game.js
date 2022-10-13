@@ -102,7 +102,10 @@ export default class Game extends Phaser.Scene {
     // then create 5 platforms from the group
     for (let i = 0; i < 5; i++) {
       
-      const x = Phaser.Math.Between(20, 460) // create a random number between 80 to 400
+      const middlePoint = this.scale.width / 2
+
+      const x = Phaser.Math.Between(middlePoint * 0.2, middlePoint * 1.8)
+
       const y =  200 * i // set 150 pixels apart vertically
 
       const platform = this.platforms.create(x, y, 'platform')
@@ -120,14 +123,14 @@ export default class Game extends Phaser.Scene {
 
       if ( i > 2 ){
 
-        this.tweens.timeline({
+        this.tweens.add({
           targets: platform.body.velocity,
           ease: 'Stepped',
-          // yoyo: true,
-          loop: -1,
+          yoyo: true,
+          // loop: -1,
           tweens: [
-            { x: Phaser.Math.Between(20, 100), y: 0, duration: 2000, ease: 'Stepped' },
-            { x: Phaser.Math.Between(-100, -20), y:  0, duration: 2000, ease: 'Stepped' }
+            { x: 50, y: 0, duration: 2000, ease: 'Stepped' },
+
           ],
         }); 
 
