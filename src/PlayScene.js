@@ -6,21 +6,25 @@ class PlayScene extends Phaser.Scene {
         super('PlayScene');
     }
 
-    create(){
-        window.game = this
+    create() {
+        window.game = this // game debugger
 
         let BASE_URL = 'http://localhost:3000'
-    
+
         const token = localStorage.getItem("token")
         axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
 
+        // this is the axios get to get the logged in user name
         axios.get(`${BASE_URL}/current_user`)
-        .then( res => {
-            console.log(res)
-            this.playerName = res.data.name
-            // this.playerHopScore = res.data.hopScore
-            console.log(this.playerName)
-        })
+            .then(res => {
+                console.log(res)
+                this.playerName = res.data.name
+                // this.playerHopScore = res.data.hopScore
+                console.log(this.playerName)
+            })
+            .catch(err => {
+                console.log('Error getting playerName:', err)
+            })
 
         // console.log(this.playerName)
 
@@ -79,12 +83,20 @@ class PlayScene extends Phaser.Scene {
             this.welcome
         ])
 
+        // this.gameOverScreen = this.add.container(width / 2, height / 2 - 50).setAlpha(0) // setAlpha(0) to be hidden
+        // this.gameOverText = this.add.image(0, 0, 'game-over');
+        // this.restart = this.add.image(0, 80, 'restart').setInteractive();// setInteractive() add event handlers
+        // this.gameOverScreen.add([
+        //     this.gameOverText, this.restart
+        // ])
+
         this.gameOverScreen = this.add.container(width / 2, height / 2 - 50).setAlpha(0) // setAlpha(0) to be hidden
         this.gameOverText = this.add.image(0, 0, 'game-over');
-        this.restart = this.add.image(0, 80, 'restart').setInteractive();// setInteractive() add event handlers
+        this.results = this.add.image(0, 80, 'results').setInteractive();// setInteractive() add event handlers
         this.gameOverScreen.add([
-            this.gameOverText, this.restart
+            this.gameOverText, this.results
         ])
+
 
         this.obstacles = this.physics.add.group();
 
@@ -116,8 +128,14 @@ class PlayScene extends Phaser.Scene {
             this.bunny.setTexture('bunny-hurt');
             this.respawnTime = 0;
             this.gameSpeed = 10; // controller for gamespeed 10 pixels per second
+
+            // console.log(this.score, this.playerName)
+            // this.scene.start('end-scene', {
+            //     score: this.score,
+            //     playerName: this.playerName
+            // })
             this.gameOverScreen.setAlpha(1); // setAlpha(1) to show game over image
-            this.score = 0; // this is to restart the score 
+            // this.score = 0; // this is to restart the score 
             this.hitSound.play();
         }, null, this);
 
@@ -248,18 +266,28 @@ class PlayScene extends Phaser.Scene {
     }
 
     handleInputs() {
-        this.restart.on('pointerdown', () => {
-            // resetting to all initial state
+        // this.restart.on('pointerdown', () => {
+        //     // resetting to all initial state
 
-            this.bunny.setVelocityY(60); //previous (0)
-            this.bunny.body.height = 92;
-            this.bunny.body.offset.y = 60;
-            this.physics.resume();
-            this.obstacles.clear(true, true);// removing all obstacles
-            this.rewards.clear(true, true);// removing all rewards
-            this.isGameRunning = true;
-            this.gameOverScreen.setAlpha(0); //setAlpha(0) to be hidden
-            this.anims.resumeAll();
+        //     this.bunny.setVelocityY(60); //previous (0)
+        //     this.bunny.body.height = 92;
+        //     this.bunny.body.offset.y = 60;
+        //     this.physics.resume();
+        //     this.obstacles.clear(true, true);// removing all obstacles
+        //     this.rewards.clear(true, true);// removing all rewards
+        //     this.isGameRunning = true;
+        //     this.gameOverScreen.setAlpha(0); //setAlpha(0) to be hidden
+        //     this.anims.resumeAll();
+        // })
+
+        this.results.on('pointerdown', () => {
+
+            console.log('results!')
+            console.log('results passed?', this.score, this.playerName)
+            this.scene.start('end-scene', {
+                score: this.score,
+                playerName: this.playerName
+            })
         })
 
         this.input.keyboard.on('keydown_UP', () => {
@@ -347,12 +375,6 @@ class PlayScene extends Phaser.Scene {
         const distance = Phaser.Math.Between(200, 700);// the distance between rewards in pixels
         // console.log('rewardNum',obstacleNum)
         // console.log('distance',distance)
-
-
-        // reward = this.rewards
-        //     .create(this.game.config.width + distance, this.game.config.height, `reward-${rewardNum}`)
-        //     //                                                                              ^^ randomly generate rewards
-        //     .setOrigin(0, 1); // setting the reward position
 
 
         let reward;
