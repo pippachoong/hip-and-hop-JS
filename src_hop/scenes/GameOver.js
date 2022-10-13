@@ -48,9 +48,7 @@ export default class GameOver extends Phaser.Scene {
                 textContent.push(perLineResults)
                 
               }
-            } else {
-              textContent = ["GAME____OVER", "", "Sign Up / Log In", "to store your scores!"]
-            }
+            } 
             textContent.push('')
             textContent.push('press SPACEBAR')
             textContent.push('to play again!')
@@ -69,6 +67,16 @@ export default class GameOver extends Phaser.Scene {
       })
       .catch( err => {
         console.log('Error posting results:', err)
+
+        let textContent;
+        textContent = ["GAME____OVER", "", "Sign Up / Log In", "to store your scores!", "", 'press SPACEBAR', 'to play again!']
+        const width = this.scale.width
+        const height = this.scale.height
+        this.add.text(width * 0.5, height * 0.5, textContent, {
+          fontSize: 30
+        })
+        .setOrigin(0.5)
+
       })
 
 

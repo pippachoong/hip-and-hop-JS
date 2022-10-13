@@ -59,7 +59,15 @@ export default class EndScene extends Phaser.Scene {
             })
             .catch(err => {
                 console.log('Error posting results:', err)
-            })
+                let textContent;
+                textContent = ["GAME____OVER", "", "Sign Up / Log In", "to store your scores!", "", 'press UP KEY', 'to play again!']
+                const width = this.scale.width
+                const height = this.scale.height
+                this.add.text(width * 0.5, height * 0.5, textContent, {
+                fontSize: 30
+                })
+                .setOrigin(0.5)
+                    })
 
         // this is the axios get to grab the top 5 user name and their score, and show it in a screen
 
