@@ -59,12 +59,16 @@ export default class EndScene extends Phaser.Scene {
         // this is the axios get to grab the top 5 user name and their score, and show it in a screen
 
 
-        this.input.keyboard.once('keydown-SPACE', () => {
-            this.scene.start('game')
-        })
-
         // add restart button
         this.restart = this.add.image(500, 500, 'restart').setInteractive();// setInteractive() add event handlers
+
+
+        this.restart.on('pointerdown', () => {
+            // resetting to all initial state
+            this.scene.start('PlayScene')
+
+        })
+
 
     }
 }
