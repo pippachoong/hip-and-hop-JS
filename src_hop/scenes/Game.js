@@ -89,7 +89,7 @@ export default class Game extends Phaser.Scene {
     
     // create base platform
     this.basePlatform = this.physics.add.staticGroup()
-    this.base = this.basePlatform.create(240, 600, 'platform').setScale(2).refreshBody()
+    this.base = this.basePlatform.create(240, 200, 'platform').setScale(2).refreshBody()
 
     // debugging text
     this.debugText = this.add.text(10, 10, 'debugging text', {font: '12px Courier', fill: '#000000'})
@@ -100,13 +100,13 @@ export default class Game extends Phaser.Scene {
 
 
     // then create 5 platforms from the group
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 10; i++) {
       
       const middlePoint = this.scale.width / 2
 
       const x = Phaser.Math.Between(middlePoint * 0.2, middlePoint * 1.8)
 
-      const y =  200 * i // set 150 pixels apart vertically
+      const y =  -200 * i // set 150 pixels apart vertically
 
       const platform = this.platforms.create(x, y, 'platform')
         .setImmovable(true)
@@ -121,21 +121,30 @@ export default class Game extends Phaser.Scene {
       // Refresh the physics body based on any changes we made to the GameObject like position and scale
       // body.updateFromGameObject() 
 
-      if ( i > 2 ){
+      if ( i > 3 && i < 8 ){
+
+        const randomNum = Phaser.Math.Between(-400, 400)
+
+        const time = 1000
 
         this.tweens.timeline({
           targets: platform.body.velocity,
           loop: -1,
           tweens: [
-            { x: 50, duration: 2000, ease: 'Stepped' },
+            { x: randomNum, duration: time, ease: 'Stepped' },
+            { x: 0, duration: time, ease: 'Stepped' },
+            { x: -randomNum, duration: time, ease: 'Stepped' },
+            { x: 0, duration: time, ease: 'Stepped' },
           ]
         }); 
+
+        platform.scale = 0.35
 
       }
       
     }
 
-    this.player = this.physics.add.sprite(240, 320, 'bunny').setScale(0.5)
+    this.player = this.physics.add.sprite(240, 0, 'bunny').setScale(0.5)
 
     // add weight (gravity) to player
     this.player.body.setGravityY(200)
@@ -270,12 +279,15 @@ export default class Game extends Phaser.Scene {
     // iterate through the children in the group
     this.platforms.children.iterate( child => {
       const platform = child
-
+      // console.log(platform.y)
       const scrollY = this.cameras.main.scrollY
 
+      const middlePoint = this.scale.width / 2
+
       // console.log(scrollY)
-      if (platform.y >= scrollY + 700){
-        platform.y = scrollY - Phaser.Math.Between(50, 100)
+      if (platform.y >= scrollY + 1900){
+        platform.y = scrollY - Phaser.Math.Between(100, 120)
+        platform.x = Phaser.Math.Between(middlePoint * 0.2, middlePoint * 1.8)
         
         // platform.body.updateFromGameObject()
         // create a carrot above the platform being reused
@@ -291,7 +303,7 @@ export default class Game extends Phaser.Scene {
     const bottomPlatform = this.findBottomMostPlatform()
     
     // if player is past 200 pixels than the bottom most platform, it will be game over
-    if (this.player.y > bottomPlatform.y + 200){
+    if (this.player.y > bottomPlatform.y + 500){
       this.scene.start('game-over', {
         score: this.carrotsCollected,
         playerName: this.playerName
