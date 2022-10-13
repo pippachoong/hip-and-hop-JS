@@ -61,6 +61,7 @@ export default class Game extends Phaser.Scene {
     this.load.image('cloud1', 'assets/cloud1.png')
 
     this.load.image('cloud2', 'assets/cloud1.png')
+    this.load.image('bomb', 'assets/bomb.png')
 
     this.load.audio('jump', 'assets/jump.m4a');
     this.load.audio('eatCarrot', 'assets/eat_carrot.ogg');
@@ -118,7 +119,8 @@ export default class Game extends Phaser.Scene {
     this.eatCarrot = this.sound.add('eatCarrot', { volume: 0.2 });
     this.gameOver = this.sound.add('gameOver', { volume: 0.2 });
 
-    
+    this.bombs = this.physics.add.group()
+
     // create a group of dynamic platforms
     this.platforms = this.physics.add.group()
 
@@ -236,16 +238,16 @@ export default class Game extends Phaser.Scene {
     const collisionMovingPlatform = (platform, sprite) => {
 
       if (platform.body.touching.up && sprite.body.touching.down) {
-       
         sprite.isOnPlatform = true;
         sprite.currentPlatform = platform;
       }
     };
 
-    
+
 
     // tell the game what things should collide
     this.physics.add.collider(this.platforms, this.player, collisionMovingPlatform)
+
     this.physics.add.collider(this.basePlatform, this.player)
     
     // this.physics.add.collider(this.movingPlatform, this.player, collisionMovingPlatform )
@@ -260,6 +262,7 @@ export default class Game extends Phaser.Scene {
 
     // create collidor for platform and carrot
     this.physics.add.collider(this.platforms, this.carrots, collisionMovingPlatform)
+    this.physics.add.collider(this.platforms, this.bombs)
 
     // overlap is used to check to see if the target body, or an array of target bodies,
     // intersects with any of the given bodies.
@@ -272,12 +275,29 @@ export default class Game extends Phaser.Scene {
       undefined, // don't need process callback
       this // `this` is the Game Scene instance when handleCollectCarrot() method is called
     )
+    
+    setInterval(() => {
+      this.createBomb(this.player, this.scale.width, this.cameras.main.scrollY)
+    }, 4000)
+
+    // this.physics.add.overlap(
+    //   this.player, // target
+    //   this.bombs, // [bodies]
+    //   this.touchBomb, // called on overlap
+    //   undefined, // don't need process callback
+    //   this
+    // )
 
     // Add carrot score to scene
     const style = { color: '#000', fontSize: 24}
     this.carrotsCollectedText = this.add.text( 240, 10, 'Carrots: 0', style)
       .setScrollFactor(0) // to scroll along with camera
       .setOrigin(0.5, 0) // keep the text centered
+
+
+    // if(this.player.y += 300){
+    //   this.createBomb(this.player, this.scale.width, this.cameras.main.scrollY)
+    // }
 
 
     // Create anims for sprite ----------------------------------------
@@ -314,6 +334,8 @@ export default class Game extends Phaser.Scene {
   // similar to "update loop", this code gets called every frame
   update(){
 
+    
+
     const touchingDown = this.player.body.touching.down
 
     // if (touchingDown){
@@ -340,16 +362,20 @@ export default class Game extends Phaser.Scene {
     if (this.cursors.up.isDown && touchingDown){
       this.player.setVelocityY(-450)
       this.jumpSound.play();
-
+      
     } else if (!touchingDown){
       this.player.anims.play('jump')
     }
 
-    // checkCollision is a property where we can set which directions we want collision for
-    // so that the bunny can jump to above platforms directly below the platform
+
     this.player.body.checkCollision.up = false
     this.player.body.checkCollision.left = false
     this.player.body.checkCollision.right = false
+  
+
+    // checkCollision is a property where we can set which directions we want collision for
+    // so that the bunny can jump to above platforms directly below the platform
+    
     
 
     // disable base platform when player traverse far enough
@@ -381,6 +407,20 @@ export default class Game extends Phaser.Scene {
     // calling horizontalWrap method
     this.horizontalWrap(this.player)
 
+    this.bombs.children.iterate( child => {
+      let bomb = child
+
+      if(Phaser.Geom.Intersects.RectangleToRectangle(this.player.getBounds(), bomb.getBounds())){
+
+        this.gameOver.play()
+        this.scene.start('game-over', {
+          score: this.carrotsCollected,
+          playerName: this.playerName
+        })
+        
+      }
+    })
+
     // for game over
     const bottomPlatform = this.findBottomMostPlatform()
     
@@ -395,8 +435,8 @@ export default class Game extends Phaser.Scene {
 
 
     this.debugText.setText([
-      `object: ${this.player}`,
-      `body.velocity.x: ${this.player.body.velocity.x}`,
+      `object: cameras.scrollY`,
+      `scrollY: ${this.cameras.main.scrollY}`,
       // `y: ${this.player.y}`,
     ])
 
@@ -466,6 +506,7 @@ export default class Game extends Phaser.Scene {
     const value = `Carrots: ${this.carrotsCollected}`
     this.carrotsCollectedText.text = value
 
+    
   } // handleCollectCarrot()
 
   // method for identifying which playform in the platforms group is the last one visually
@@ -493,6 +534,27 @@ export default class Game extends Phaser.Scene {
     // and it gets returned
     return bottomPlatform
   } // findBottomMostPlatform()
+
+  createBomb(player, screen, cameraY){
+    const midScreen = screen / 2
+    let x = (player.x < midScreen) ? 
+    Phaser.Math.Between(midScreen, 480) 
+    :
+    Phaser.Math.Between(0, midScreen)
+
+    let bomb = this.bombs.create(x, cameraY, 'bomb')
+    bomb.setBounce(1)
+    bomb.setVelocity(Phaser.Math.Between(-200, 200), 20)
+
+  }
+
+  touchBomb(){
+    // this.gameOver.play()
+    // this.scene.start('game-over', {
+    //   score: this.carrotsCollected,
+    //   playerName: this.playerName
+    // })
+  }
 
   
 }
