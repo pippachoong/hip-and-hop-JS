@@ -1,6 +1,16 @@
-console.log(`loaded`)
 
-let BASE_URL = 'http://localhost:3000'
+
+
+let BASE_URL;
+if( location.href.includes('netlify') ){
+  BASE_URL = 'https://hipandhop.herokuapp.com';
+} else {
+  BASE_URL = 'http://localhost:3000';
+}
+
+console.log(BASE_URL)
+
+// let BASE_URL = 'http://localhost:3000'
 
 
 $( function(){
