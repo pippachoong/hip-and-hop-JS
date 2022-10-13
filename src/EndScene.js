@@ -64,7 +64,7 @@ export default class EndScene extends Phaser.Scene {
         })
 
         // add restart button
-        this.restart = this.add.image(0, 80, 'restart').setInteractive();// setInteractive() add event handlers
+        this.restart = this.add.image(500, 500, 'restart').setInteractive();// setInteractive() add event handlers
 
     }
 }
