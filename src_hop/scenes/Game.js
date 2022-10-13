@@ -61,7 +61,12 @@ export default class Game extends Phaser.Scene {
   // only assets that have been loaded using preload() can be used in create
   create(){
     
-    let BASE_URL = 'http://localhost:3000'
+    let BASE_URL;
+    if( location.href.includes('netlify') ){
+      BASE_URL = 'https://hipandhop.herokuapp.com';
+    } else {
+      BASE_URL = 'http://localhost:3000';
+    }
     
     const token = localStorage.getItem("token")
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;

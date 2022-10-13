@@ -9,7 +9,12 @@ class PlayScene extends Phaser.Scene {
     create() {
         window.game = this // game debugger
 
-        let BASE_URL = 'http://localhost:3000'
+        let BASE_URL;
+        if( location.href.includes('netlify') ){
+        BASE_URL = 'https://hipandhop.herokuapp.com';
+        } else {
+        BASE_URL = 'http://localhost:3000';
+        }
 
         const token = localStorage.getItem("token")
         axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
