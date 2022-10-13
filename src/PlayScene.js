@@ -10,10 +10,10 @@ class PlayScene extends Phaser.Scene {
         window.game = this // game debugger
 
         let BASE_URL;
-        if( location.href.includes('netlify') ){
-        BASE_URL = 'https://hipandhop.herokuapp.com';
+        if (location.href.includes('netlify')) {
+            BASE_URL = 'https://hipandhop.herokuapp.com';
         } else {
-        BASE_URL = 'http://localhost:3000';
+            BASE_URL = 'http://localhost:3000';
         }
 
         const token = localStorage.getItem("token")
@@ -175,7 +175,8 @@ class PlayScene extends Phaser.Scene {
                 loop: true,
                 callbackScope: this,
                 callback: () => {
-                    this.bunny.setVelocityX(80);// 80 pixels     
+                    this.bunny.setVelocityX(80);// 80 pixels   
+                    this.anims.resumeAll()
                     this.bunny.play('bunny-run', 1); // 
                     if (this.ground.width < width) {
                         this.ground.width += 17 * 2;

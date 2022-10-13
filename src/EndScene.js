@@ -15,10 +15,10 @@ export default class EndScene extends Phaser.Scene {
     create() {
 
         let BASE_URL;
-        if( location.href.includes('netlify') ){
-        BASE_URL = 'https://hipandhop.herokuapp.com';
+        if (location.href.includes('netlify')) {
+            BASE_URL = 'https://hipandhop.herokuapp.com';
         } else {
-        BASE_URL = 'http://localhost:3000';
+            BASE_URL = 'http://localhost:3000';
         }
 
         // this is the axios post to update the user's hip score at the database

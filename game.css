@@ -1,9 +1,11 @@
-/* GAME PAGE */
+@import url('https://fonts.googleapis.com/css2?family=Alfa+Slab+One&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Sacramento:400');
+
 canvas {
     display: block;
     margin: 0 auto;
     /* border-radius: 25px; */
-    box-shadow: 10px 10px 10px 5px rgba(0, 0, 0, 0.3);
+    box-shadow: 25px 10px 15px 11px rgba(0, 0, 0, 0.3);
 
 }
 
@@ -25,7 +27,95 @@ body {
     }
 }
 
+/*------------ HOME BUTTON --------------------- */
+.home {
+    margin: 10%;
+    font-family: 'Alfa Slab One', cursive;
+    text-align: center;
+    align-items: center;
+    width: 200px;
+    font-size: 20px;
+    font-weight: 600;
+    color: #fff;
+    cursor: pointer;
+    margin: 20px;
+    height: 55px;
+    display: flex;
+    justify-content: center;
+    border: none;
+    background-size: 300% 100%;
+    border-radius: 50px;
+    moz-transition: all .4s ease-in-out;
+    -o-transition: all .4s ease-in-out;
+    -webkit-transition: all .4s ease-in-out;
+    transition: all .4s ease-in-out;
+    background-image: linear-gradient(to right, #25aae1, #40e495, #30dd8a, #2bb673);
+    box-shadow: 0 4px 15px 0 rgba(49, 196, 190, 0.75);
+    
+}
 
+.home:hover {
+    background-position: 100% 0;
+    moz-transition: all .4s ease-in-out;
+    -o-transition: all .4s ease-in-out;
+    -webkit-transition: all .4s ease-in-out;
+    transition: all .4s ease-in-out;
+}
 
+.home:focus {
+    outline: none;
+}
 
+.home a:link {
+    text-decoration: none;
+    color: white;
+    padding: 35px;
+    font-size: 30px;
+    font-weight: normal;
+    font-family: 'Alfa Slab One', cursive;
+}
+
+/*--------------TITLE -----------------*/
+
+.neonText {
+  animation: flicker 3s infinite alternate;
+  color: #fff;
+  
+}
+
+header {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    align-items: center;
+}
+
+h2 {
+    font-size: 4.2rem;    
+    font-family: "Sacramento", sans-serif;
+    display: inherit;
+    text-align: center;
+    margin: 20px;
+}
+
+/* Flickering animation */
+@keyframes flicker {
+    
+  0%, 18%, 22%, 25%, 53%, 57%, 100% {
+
+      text-shadow:
+      0 0 4px #fff,
+      0 0 11px #fff,
+      0 0 19px #fff,
+      0 0 40px #0fa,
+      0 0 80px #0fa,
+      0 0 90px #0fa,
+      0 0 100px #0fa,
+      0 0 150px #0fa;
+  
+  }
+  
+  20%, 24%, 55% {        
+      text-shadow: none;
+  }    
+}
 
