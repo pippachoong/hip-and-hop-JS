@@ -51,6 +51,8 @@ export default class Game extends Phaser.Scene {
     // load the carrot
     this.load.image('carrot', 'assets/carrot.png')
 
+    this.load.image('slippery_platform', 'assets/ground_snow.png')
+
     // load the usage of keyboard arrow keys
     this.cursors = this.input.keyboard.createCursorKeys()
     
@@ -91,6 +93,9 @@ export default class Game extends Phaser.Scene {
     
     // create a group of dynamic platforms
     this.platforms = this.physics.add.group()
+
+    // add player
+    this.player = this.physics.add.sprite(240, 0, 'bunny').setScale(0.5)
     
     // create base platform
     this.basePlatform = this.physics.add.staticGroup()
@@ -108,6 +113,19 @@ export default class Game extends Phaser.Scene {
       classType: Carrot
     })
 
+    const slipperyIcePlatform = (platform, sprite) => {
+      if (platform.body.touching.up && sprite.body.touching.down) {
+        // console.log('touched', platform.slideAmount)
+        sprite.body.x += platform.slideAmount
+        
+        // sprite.body.useDamping
+        // -sprite.body.velocity.x * (1 - sprite.body.drag.x)
+        sprite.body.friction.x=0
+        // console.log(sprite.body.velocity.x)
+        // console.log(sprite.body.drag.x)
+      }
+    }
+
 
     // then create 5 platforms from the group
     for (let i = 0; i < 10; i++) {
@@ -118,58 +136,85 @@ export default class Game extends Phaser.Scene {
 
       const y =  -200 * i // set 150 pixels apart vertically
 
-      const platform = this.platforms.create(x, y, 'platform')
-        .setImmovable(true)
-        .setVelocity(0, 0);
+      const scaleArray = [0.5, 0.35, 0.35, 0.3, 0.25, 0.2]
 
-      platform.body.setAllowGravity(false);
-    
-      platform.scale = 0.5
+      const randomScaleValue = scaleArray[parseInt(Math.random() * scaleArray.length)]
 
-      this.addCarrotAbove(platform)
+      if ( i < 7 ){
+  
+        const platform = this.platforms.create(x, y, 'platform')
+          .setImmovable(true)
+          .setVelocity(0, 0);
+  
+        platform.body.setAllowGravity(false);
+      
+        platform.scale = randomScaleValue
+  
+        this.addCarrotAbove(platform)
+  
+        // const body = platform.body
+  
+        // Refresh the physics body based on any changes we made to the GameObject like position and scale
+        // body.updateFromGameObject() 
+  
+        if ( i > 3 && i < 7 ){
+  
+          const randomNum = Phaser.Math.Between(-400, 400)
+  
+          const time = 1000
+  
+          this.tweens.timeline({
+            targets: platform.body.velocity,
+            loop: -1,
+            tweens: [
+              { x: randomNum, duration: time, ease: 'Stepped' },
+              { x: 0, duration: time, ease: 'Stepped' },
+              { x: -randomNum, duration: time, ease: 'Stepped' },
+              { x: 0, duration: time, ease: 'Stepped' },
+            ]
+          }); 
+  
+          platform.scale = randomScaleValue
+        }
 
-      // const body = platform.body
+      } else {
 
-      // Refresh the physics body based on any changes we made to the GameObject like position and scale
-      // body.updateFromGameObject() 
+        const slipperyPlatform = this.platforms.create(x, y, 'slippery_platform')
+          .setImmovable(true)
+          .setVelocity(0, 0)
+     
+        slipperyPlatform.body.setAllowGravity(false);
+      
+        slipperyPlatform.scale = randomScaleValue
 
-      if ( i > 3 && i < 8 ){
+        const slide = Phaser.Math.Between(3, 6) * (Math.random() > 0.5 ? 1 : -1)
 
-        const randomNum = Phaser.Math.Between(-400, 400)
+        slipperyPlatform.slideAmount = slide
 
-        const time = 1000
+        // slipperyPlatform.body.friction.x = 0
+  
+        // this.addCarrotAbove(slipperyPlatform)
 
-        this.tweens.timeline({
-          targets: platform.body.velocity,
-          loop: -1,
-          tweens: [
-            { x: randomNum, duration: time, ease: 'Stepped' },
-            { x: 0, duration: time, ease: 'Stepped' },
-            { x: -randomNum, duration: time, ease: 'Stepped' },
-            { x: 0, duration: time, ease: 'Stepped' },
-          ]
-        }); 
-
-        platform.scale = 0.35
+        this.physics.add.collider(slipperyPlatform, this.player, slipperyIcePlatform)
 
       }
       
     }
 
-    this.player = this.physics.add.sprite(240, 0, 'bunny').setScale(0.5)
-
     // add weight (gravity) to player
-    this.player.body.setGravityY(200)
-
+    this.player.body.setGravityY(250)
 
 
     const collisionMovingPlatform = (platform, sprite) => {
 
       if (platform.body.touching.up && sprite.body.touching.down) {
+       
         sprite.isOnPlatform = true;
         sprite.currentPlatform = platform;
       }
     };
+
+    
 
     // tell the game what things should collide
     this.physics.add.collider(this.platforms, this.player, collisionMovingPlatform)
@@ -294,8 +339,8 @@ export default class Game extends Phaser.Scene {
       const middlePoint = this.scale.width / 2
 
       // console.log(scrollY)
-      if (platform.y >= scrollY + 1900){
-        platform.y = scrollY - Phaser.Math.Between(100, 120)
+      if (platform.y >= scrollY + 800){
+        platform.y = scrollY - 1100 - Phaser.Math.Between(100, 120)
         platform.x = Phaser.Math.Between(middlePoint * 0.2, middlePoint * 1.8)
         
         // platform.body.updateFromGameObject()
@@ -307,12 +352,11 @@ export default class Game extends Phaser.Scene {
     // calling horizontalWrap method
     this.horizontalWrap(this.player)
 
-
     // for game over
     const bottomPlatform = this.findBottomMostPlatform()
     
     // if player is past 200 pixels than the bottom most platform, it will be game over
-    if (this.player.y > bottomPlatform.y + 500){
+    if (this.player.y > bottomPlatform.y + 300){
       this.scene.start('game-over', {
         score: this.carrotsCollected,
         playerName: this.playerName
@@ -322,13 +366,13 @@ export default class Game extends Phaser.Scene {
 
     this.debugText.setText([
       `object: ${this.player}`,
-      `x: ${this.player.x}`,
-      `y: ${this.player.y}`,
+      `body.velocity.x: ${this.player.body.velocity.x}`,
+      // `y: ${this.player.y}`,
     ])
 
     this.secondDebugText.setText([
-      `object: scrollY`,
-      `value: ${this.cameras.main.scrollY}`,
+      `object: drag.x`,
+      `drag.x ${this.player.body.drag.x}`,
     ])
 
 
