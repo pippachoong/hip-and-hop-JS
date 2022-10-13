@@ -98,6 +98,11 @@ export default class Game extends Phaser.Scene {
     this.secondDebugText = this.add.text(10, 60, 'debugging text', {font: '12px Courier', fill: '#000000'})
     this.secondDebugText.setScrollFactor(0)
 
+    // create a carrot
+    this.carrots = this.physics.add.group({
+      classType: Carrot
+    })
+
 
     // then create 5 platforms from the group
     for (let i = 0; i < 10; i++) {
@@ -115,6 +120,8 @@ export default class Game extends Phaser.Scene {
       platform.body.setAllowGravity(false);
     
       platform.scale = 0.5
+
+      this.addCarrotAbove(platform)
 
       // const body = platform.body
 
@@ -171,10 +178,7 @@ export default class Game extends Phaser.Scene {
     // set the horizontal dead zone to 1.5x game width
     this.cameras.main.setDeadzone(this.scale.width * 1.5)
 
-    // create a carrot
-    this.carrots = this.physics.add.group({
-      classType: Carrot
-    })
+    
 
     // create collidor for platform and carrot
     this.physics.add.collider(this.platforms, this.carrots, collisionMovingPlatform)
