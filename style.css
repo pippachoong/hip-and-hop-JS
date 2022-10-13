@@ -9,11 +9,66 @@ body {
     min-height: 60vh;
 }
 
+#nav-bar{
+    margin: 0 auto; 
+    position: fixed;
+    display: inline-block;
+    top: 120px;
+    margin-top: 25px;
+
+}
+
+#nav-bar a:link {
+    text-decoration: none;
+    color: black;
+    padding: 35px;
+    font-size: 25px;
+    font-family: 'Alfa Slab One', cursive;
+}
+
+#nav-bar a {
+  color: inherit;
+  text-decoration: none;
+  background:
+    linear-gradient(
+      to right,
+      #70b0b0,
+      #70b0b0
+    ),
+    linear-gradient(
+      to right,
+      #f19960,
+      #ca5a4b
+  );
+  background-size: 100% 10px, 0 10px;
+  background-position: 100% 80%, 0 80%;
+  background-repeat: no-repeat;
+  transition: background-size 400ms;
+}
+
+#nav-bar a:hover  {
+  background-size: 0 10px, 100% 10px;
+  color:  #70b0b0;
+}
+
+
+#welcome-msg{
+    position: fixed;
+    display: inline-block;
+    top: 50px;
+    font-family: 'Alfa Slab One', cursive;
+    font-size: 28px;
+}
+
+
+
+
 /* MAIN PAGE - TITLE------------------- */
 .top-heading{
     font-family: 'Alfa Slab One', cursive;
     font-size: 20px;
     position: relative;
+    padding-right: 50px;
 }
 
 
@@ -21,6 +76,7 @@ body {
   position: relative;
   -webkit-box-reflect: below 0px linear-gradient(transparent, rgba(255, 255, 255, 0.2));
   font-size: 150px;
+  margin-top: 50px;
 }
 .waviy span {
   font-family: 'Alfa Slab One', cursive;
@@ -101,6 +157,7 @@ body {
 .swing {
     animation: swing ease-in-out 1s infinite alternate;
     float:left;
+    
 }
  
 
