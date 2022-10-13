@@ -27,6 +27,14 @@ input {
     background: #E8D9BE;
 }
 
+#name-signup input {
+    border: none;
+    border-bottom: 5px solid #70b0b0;
+    font-family: 'Alfa Slab One', cursive;
+    font-size: 18px;
+    background: #E8D9BE;
+}
+
 button {
     margin: 10%;
     text-align: center;
