@@ -272,19 +272,6 @@ class PlayScene extends Phaser.Scene {
     }
 
     handleInputs() {
-        // this.restart.on('pointerdown', () => {
-        //     // resetting to all initial state
-
-        //     this.bunny.setVelocityY(60); //previous (0)
-        //     this.bunny.body.height = 92;
-        //     this.bunny.body.offset.y = 60;
-        //     this.physics.resume();
-        //     this.obstacles.clear(true, true);// removing all obstacles
-        //     this.rewards.clear(true, true);// removing all rewards
-        //     this.isGameRunning = true;
-        //     this.gameOverScreen.setAlpha(0); //setAlpha(0) to be hidden
-        //     this.anims.resumeAll();
-        // })
 
         this.results.on('pointerdown', () => {
 
@@ -353,18 +340,20 @@ class PlayScene extends Phaser.Scene {
 
     placeObstacle() {
         const obstacleNum = Math.floor(Math.random() * 7) + 1;// (total of 7 obstacles)
-        const distance = Phaser.Math.Between(900, 1500);// the distance between obstacles in pixels
+        const distance = Phaser.Math.Between(1000, 1500);// the distance between obstacles in pixels
         // console.log('obstacleNum',obstacleNum)
         // console.log('distance',distance)
 
         let obstacle;
         if (obstacleNum > 6) {
-            const enemyHeight = [40, 100]; // 20,50 pixels from the ground 
+            const enemyHeight = [150, 400]; // 20,50 pixels from the ground 
             obstacle = this.obstacles
                 .create(this.game.config.width + distance, this.game.config.height - enemyHeight[Math.floor(Math.random() * 2)], `enemy-bird`)
                 .setOrigin(0, 1)
-            obstacle.play('enemy-bunny-fly', 1);
+
+            obstacle.play('enemy-bunny-fly', 5);
             obstacle.body.height = obstacle.body.height / 1.5;
+            obstacle.setVelocityX(Phaser.Math.Between(-1500, -300))
         } else {
             obstacle = this.obstacles
                 .create(this.game.config.width + distance, this.game.config.height, `obstacle-${obstacleNum}`)
@@ -396,7 +385,7 @@ class PlayScene extends Phaser.Scene {
         ]
         const rewardNum = Math.floor(Math.random() * rewardAssets.length)
 
-        const rewardHeight = [40, 150]; // 20,50 pixels from the ground 
+        const rewardHeight = [50, 200]; // 20,50 pixels from the ground 
         reward = this.rewards
             .create(this.game.config.width + distance, this.game.config.height - rewardHeight[Math.floor(Math.random() * 2)], rewardAssets[rewardNum].fileName)
         reward.play(rewardAssets[rewardNum].animationName, 1);
