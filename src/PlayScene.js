@@ -44,6 +44,7 @@ class PlayScene extends Phaser.Scene {
         this.hitSound = this.sound.add('hit', { volume: 0.2 });
         this.reachSound = this.sound.add('reach', { volume: 0.2 });
         this.hitRewardSound = this.sound.add('hit-reward', { volume: 0.2 });
+        this.gameOverSound = this.sound.add('game-over', { volume: 0.2 });
 
 
 
@@ -139,6 +140,7 @@ class PlayScene extends Phaser.Scene {
             //     score: this.score,
             //     playerName: this.playerName
             // })
+            this.gameOverSound.play();
             this.gameOverScreen.setAlpha(1); // setAlpha(1) to show game over image
             // this.score = 0; // this is to restart the score 
             this.hitSound.play();
@@ -290,7 +292,7 @@ class PlayScene extends Phaser.Scene {
             this.jumpSound.play();
             this.bunny.body.height = 92;
             this.bunny.body.offset.y = 60;
-            this.bunny.setVelocityY(-1500);
+            this.bunny.setVelocityY(-1600);
             // this.bunny.setTexture('bunny', 0);
         })
 
