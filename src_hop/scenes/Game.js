@@ -123,15 +123,12 @@ export default class Game extends Phaser.Scene {
 
       if ( i > 2 ){
 
-        this.tweens.add({
+        this.tweens.timeline({
           targets: platform.body.velocity,
-          ease: 'Stepped',
-          yoyo: true,
-          // loop: -1,
+          loop: -1,
           tweens: [
-            { x: 50, y: 0, duration: 2000, ease: 'Stepped' },
-
-          ],
+            { x: 50, duration: 2000, ease: 'Stepped' },
+          ]
         }); 
 
       }
