@@ -42,6 +42,8 @@ export default class Game extends Phaser.Scene {
     // load background image
     this.load.image('background', 'assets/bg_layer1.png')
 
+    this.load.image('foreground', 'assets/bg_layer2.png')
+
     // load the platform image
     this.load.image('platform', 'assets/ground_grass.png')
 
@@ -55,6 +57,14 @@ export default class Game extends Phaser.Scene {
 
     // load the usage of keyboard arrow keys
     this.cursors = this.input.keyboard.createCursorKeys()
+
+    this.load.image('cloud1', 'assets/cloud1.png')
+
+    this.load.image('cloud2', 'assets/cloud1.png')
+
+    this.load.audio('jump', 'assets/jump.m4a');
+    this.load.audio('eatCarrot', 'assets/eat_carrot.ogg');
+    this.load.audio('gameOver', 'assets/Level_failed1.ogg');
     
 
   } // preload()
@@ -90,6 +100,24 @@ export default class Game extends Phaser.Scene {
     this.background = this.add.image(240, 320, 'background') // (xPos, yPos, key in preload())
       .setScrollFactor(1, 0) 
       // by setting y scroll factor to 0 we can keep the background from scrolling up and down with the camera
+
+    this.foreground = this.add.image(240, 320, 'foreground') // (xPos, yPos, key in preload())
+      .setScrollFactor(1, 0) 
+      // by setting y scroll factor to 0 we can keep the background from scrolling up and down with the camera
+
+
+    this.cloud1 = this.add.image(150, 240, 'cloud1')
+      .setScrollFactor(1, 0)
+      .setAlpha(0.5)
+
+    this.cloud2 = this.add.image(350, 500, 'cloud2')
+      .setScrollFactor(1, 0)
+      .setAlpha(0.5)
+
+    this.jumpSound = this.sound.add('jump', { volume: 0.2 });
+    this.eatCarrot = this.sound.add('eatCarrot', { volume: 0.2 });
+    this.gameOver = this.sound.add('gameOver', { volume: 0.2 });
+
     
     // create a group of dynamic platforms
     this.platforms = this.physics.add.group()
@@ -102,6 +130,8 @@ export default class Game extends Phaser.Scene {
     this.base = this.basePlatform.create(240, 200, 'platform').setScale(2).refreshBody()
 
     // debugging text
+    // only show debug text in local host mode
+
     this.debugText = this.add.text(10, 10, 'debugging text', {font: '12px Courier', fill: '#000000'})
     this.debugText.setScrollFactor(0)
 
@@ -127,7 +157,7 @@ export default class Game extends Phaser.Scene {
     }
 
 
-    // then create 5 platforms from the group
+    // then create 10 platforms from the group
     for (let i = 0; i < 10; i++) {
       
       const middlePoint = this.scale.width / 2
@@ -190,10 +220,8 @@ export default class Game extends Phaser.Scene {
         const slide = Phaser.Math.Between(3, 6) * (Math.random() > 0.5 ? 1 : -1)
 
         slipperyPlatform.slideAmount = slide
-
-        // slipperyPlatform.body.friction.x = 0
   
-        // this.addCarrotAbove(slipperyPlatform)
+        this.addCarrotAbove(slipperyPlatform)
 
         this.physics.add.collider(slipperyPlatform, this.player, slipperyIcePlatform)
 
@@ -311,6 +339,7 @@ export default class Game extends Phaser.Scene {
     // jump logic
     if (this.cursors.up.isDown && touchingDown){
       this.player.setVelocityY(-450)
+      this.jumpSound.play();
 
     } else if (!touchingDown){
       this.player.anims.play('jump')
@@ -340,7 +369,7 @@ export default class Game extends Phaser.Scene {
 
       // console.log(scrollY)
       if (platform.y >= scrollY + 800){
-        platform.y = scrollY - 1100 - Phaser.Math.Between(100, 120)
+        platform.y = scrollY - 1000 - Phaser.Math.Between(100, 120)
         platform.x = Phaser.Math.Between(middlePoint * 0.2, middlePoint * 1.8)
         
         // platform.body.updateFromGameObject()
@@ -357,6 +386,7 @@ export default class Game extends Phaser.Scene {
     
     // if player is past 200 pixels than the bottom most platform, it will be game over
     if (this.player.y > bottomPlatform.y + 300){
+      this.gameOver.play()
       this.scene.start('game-over', {
         score: this.carrotsCollected,
         playerName: this.playerName
@@ -428,6 +458,8 @@ export default class Game extends Phaser.Scene {
 
     // increment by 1 when carrot is picked up
     this.carrotsCollected++
+
+    this.eatCarrot.play()
 
     console.log(this.carrotsCollected)
     // create new text value and set it
