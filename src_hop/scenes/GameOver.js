@@ -15,6 +15,8 @@ export default class GameOver extends Phaser.Scene {
 
     let BASE_URL = 'http://localhost:3000'
 
+    const token = localStorage.getItem("token")
+
     // this is the axios post to update the user's hop score at the database
     axios.post(`${BASE_URL}/submit-hop-score`, {
       score: this.score,
@@ -32,16 +34,24 @@ export default class GameOver extends Phaser.Scene {
     })
       .then( res => {
 
-        console.log(res.data)
+        let textContent;
+
         const results = res.data
-        let textContent = ["GAME____OVER", "", "name      score",""]
 
-        for (let i = 0; i < results.length; i++) {
-          const perLineResults = `${results[i].name}_____${results[i].hopScore}`
+        if (token){
 
-          textContent.push(perLineResults)
-          
+          textContent = ["GAME____OVER", "", "name      score",""]
+
+          for (let i = 0; i < results.length; i++) {
+            const perLineResults = `${results[i].name}_____${results[i].hopScore}`
+  
+            textContent.push(perLineResults)
+            
+          }
+        } else {
+          textContent = ["GAME____OVER", "", "Sign Up / Log In", "to store your scores!"]
         }
+
         console.log(textContent)
 
         const width = this.scale.width
