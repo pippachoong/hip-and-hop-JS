@@ -36,13 +36,13 @@ password: chicken
 ### Project Features:
 
 ### Tools Used:
-Phaser 3.55.2
-Piskel 
-JS
-Express JS
-Netlify (Deployment)
-Heroku (Deployment)
-CSS
+> *Phaser 3.55.2
+> *Piskel 
+> *JS
+> *Express JS
+> *Netlify (Deployment)
+> *Heroku (Deployment)
+> *CSS
 ### Issues:
 
 
