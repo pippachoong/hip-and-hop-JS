@@ -17,6 +17,7 @@ Links to the game app:
 
 ### Description:
 
+## Hip Game
 
 
 
@@ -36,17 +37,20 @@ password: chicken
 ### Project Features:
 
 ### Tools Used:
-> *Phaser 3.55.2
-> *Piskel 
-> *JS
-> *Express JS
-> *Netlify (Deployment)
-> *Heroku (Deployment)
-> *CSS
-### Issues:
+> * MongoDB
+> * Mongoose
+> * Express JS
+> * Phaser 3.55.2
+> * Piskel 
+> * JS
+> * CSS
+> * Netlify (Deployment)
+> * Heroku (Deployment)
+
+### Challenges:
 
 
-### Wish lists:
+### Lesson Learnt:
 
 
     
