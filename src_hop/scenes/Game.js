@@ -134,11 +134,11 @@ export default class Game extends Phaser.Scene {
     // debugging text
     // only show debug text in local host mode
 
-    this.debugText = this.add.text(10, 10, 'debugging text', {font: '12px Courier', fill: '#000000'})
-    this.debugText.setScrollFactor(0)
+    // this.debugText = this.add.text(10, 10, 'debugging text', {font: '12px Courier', fill: '#000000'})
+    // this.debugText.setScrollFactor(0)
 
-    this.secondDebugText = this.add.text(10, 60, 'debugging text', {font: '12px Courier', fill: '#000000'})
-    this.secondDebugText.setScrollFactor(0)
+    // this.secondDebugText = this.add.text(10, 60, 'debugging text', {font: '12px Courier', fill: '#000000'})
+    // this.secondDebugText.setScrollFactor(0)
 
     // create a carrot
     this.carrots = this.physics.add.group({
