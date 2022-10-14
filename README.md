@@ -29,7 +29,12 @@ Detailed description of each game will be stated below. For now please enjoy som
 ### Description:
 
 ## Hip Game
-
+### Instructions
+Press the Up key to jump
+Left and right key to walk the player left and right
+Press the icon to see the leaderboard scores for Hip's game and press the replay icon to try again!
+### Gameplay
+Purple bunny, 🐰 Hip  goes on an adventure travelling on ground. Hip will face some challenges on her journey while she's hopping around. She will experience what items are good and bad for her. She gets some rewards by collecting items such as coins💰 and carrots🥕 however she will discover items such as 🕊 and 🍄 will hurt her and causing her adventure to end :(  
 
 ## Hop Game
 ### Instructions
