@@ -278,7 +278,7 @@ export default class Game extends Phaser.Scene {
     
     setInterval(() => {
       this.createBomb(this.player, this.scale.width, this.cameras.main.scrollY)
-    }, 10000)
+    }, 12000)
 
     // this.physics.add.overlap(
     //   this.player, // target
