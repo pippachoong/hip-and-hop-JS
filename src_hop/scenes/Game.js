@@ -434,16 +434,16 @@ export default class Game extends Phaser.Scene {
     }
 
 
-    this.debugText.setText([
-      `object: cameras.scrollY`,
-      `scrollY: ${this.cameras.main.scrollY}`,
-      // `y: ${this.player.y}`,
-    ])
+    // this.debugText.setText([
+    //   `object: cameras.scrollY`,
+    //   `scrollY: ${this.cameras.main.scrollY}`,
+    //   // `y: ${this.player.y}`,
+    // ])
 
-    this.secondDebugText.setText([
-      `object: drag.x`,
-      `drag.x ${this.player.body.drag.x}`,
-    ])
+    // this.secondDebugText.setText([
+    //   `object: drag.x`,
+    //   `drag.x ${this.player.body.drag.x}`,
+    // ])
 
 
   } // update()
