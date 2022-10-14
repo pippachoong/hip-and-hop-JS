@@ -18,6 +18,9 @@ Links to the game app:
 ### Description:
 
 ## Hip Game
+Purple bunny, 🐰 Hip  goes on an adventure travelling on ground. Hip will face some challenges on her journey while she's hopping around. She will experience what items are good and bad for her. She gets some rewards by collecting items such as coins💰 and carrots🥕 however she will discover items such as 🕊 and 🍄 will hurt her and causing her adventure to end :(  
+
+Press the icon to see the leaderboard scores for Hip's game and press the replay icon to try again!
 
 
 
