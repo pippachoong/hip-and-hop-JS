@@ -8,7 +8,7 @@ export default new Phaser.Game({
   // Phaser.AUTO meaning Phaser will decide to use Canvas or WebGL mode depending on the browser and devide.
 
   type: Phaser.AUTO,
-  width: 480,
+  width: 550,
   height: 640,
   scene: [Game, GameOver],
   physics: {

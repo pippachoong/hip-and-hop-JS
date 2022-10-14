@@ -162,7 +162,7 @@ export default class Game extends Phaser.Scene {
     // then create 10 platforms from the group
     for (let i = 0; i < 10; i++) {
       
-      const middlePoint = this.scale.width / 2
+      const middlePoint = 480 / 2
 
       const x = Phaser.Math.Between(middlePoint * 0.2, middlePoint * 1.8)
 
